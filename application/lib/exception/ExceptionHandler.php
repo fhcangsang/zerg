@@ -13,7 +13,7 @@ class ExceptionHandler extends Handle
     private $errorCode;
 
 
-    public function render(\Exception $e)
+    public function render(Exception $e)
     {
         if ($e instanceof BaseException) {
             //自定义异常
