@@ -1,19 +1,25 @@
 <?php
 namespace app\lib\exception;
 
-use think\Exception;
 use think\exception\Handle;
 use think\Log;
 use think\Request;
 
+/**
+ * Class ExceptionHandler
+ * @package app\lib\exception
+ */
 class ExceptionHandler extends Handle
 {
     private $code;
     private $msg;
     private $errorCode;
 
-
-    public function render(Exception $e)
+    /**
+     * @param \Exception $e
+     * @return \think\Response|\think\response\Json
+     */
+    public function render(\Exception $e)
     {
         if ($e instanceof BaseException) {
             //自定义异常
@@ -40,7 +46,10 @@ class ExceptionHandler extends Handle
         return json($result, $this->code);
     }
 
-    public function recordErrorLog(Exception $e)
+    /**
+     * @param \Exception $e
+     */
+    public function recordErrorLog(\Exception $e)
     {
         Log::info([
             'type' => 'File',
