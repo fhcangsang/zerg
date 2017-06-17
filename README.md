@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-ThinkPHP 5.0
+收藏---收藏---收藏
 ===============
 
 [![Total Downloads](https://poser.pugx.org/topthink/think/downloads)](https://packagist.org/packages/topthink/think)
@@ -129,6 +128,3 @@ ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
 
 更多细节参阅 [LICENSE.txt](LICENSE.txt)
 =======
-# tp5
-学习tp5
->>>>>>> db88d5be410b54c4929d9863bfc74efac0bfcf98
