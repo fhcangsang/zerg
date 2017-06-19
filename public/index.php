@@ -15,3 +15,8 @@
 define('APP_PATH', __DIR__ . '/../application/');
 // 加载框架引导文件
 require __DIR__ . '/../thinkphp/start.php';
+\think\Log::init([ //记录sql 信息
+    'type' => 'File',
+    'path' => LOG_PATH,
+    'level' => ['sql']
+]);

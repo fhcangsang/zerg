@@ -49,13 +49,13 @@ class ExceptionHandler extends Handle
     /**
      * @param \Exception $e
      */
-    public function recordErrorLog(\Exception $e)
+    private function recordErrorLog(\Exception $e)
     {
-        Log::info([
+        Log::init([
             'type' => 'File',
-            'path' => LOG_PATH,
+            'path' => ROOT_PATH. 'log' .DS,
             'level' => ['error']
         ]);
-        Log::record($e->getMessage(), 'error');
+        Log::record($e->getMessage(), 'error');//生产环境记录服务器内部错误
     }
 }
