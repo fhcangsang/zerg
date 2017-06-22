@@ -11,8 +11,7 @@ use think\Model;
 
 class BannerItem extends Model
 {
-    public function items() {
-        return $this->hasMany('BannerItem','banner_id','id');
+    public function img(){
+        return $this->belongsTo('Image','img_id','id');
     }
-
 }

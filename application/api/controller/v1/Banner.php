@@ -20,7 +20,8 @@ class Banner
         $validate = new IDMustBePostiveInt;
         $validate->goCheck();
 //        $banner = BannerModel::getBannerByID($id);
-        $banner = BannerModel::get($id); //BannerModel 若继承 Model 类 可以直接 使用 get() 默认查询条件是banner表的 主键
+//        $banner = BannerModel::with('items')->get($id); //BannerModel 若继承 Model 类 可以直接 使用 get() 默认查询条件是banner表的 主键
+        $banner = BannerModel::with(['items','items.img'])->find($id);
         if (!$banner) {
             throw new BannerMissException();
         }
