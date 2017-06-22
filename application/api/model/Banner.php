@@ -7,8 +7,10 @@ use think\Model;
 /**
  *
  */
-class Banner extends Model
+class Banner extends BaseModel
 {
+    protected $hidden = ['delete_time', 'update_time'];
+
     /**
      * @return \think\model\relation\HasMany
      * 一对多关联
@@ -31,7 +33,7 @@ class Banner extends Model
 //            $query->where('banner_id', '=', $id);
 //        })->select();
         */
-        $result = self::with(['items','items.img'])->find();
+        $result = self::with(['items', 'items.img'])->find();
         return $result;
 
     }

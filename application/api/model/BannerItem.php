@@ -9,13 +9,15 @@ namespace app\api\model;
 
 use think\Model;
 
-class BannerItem extends Model
+class BannerItem extends BaseModel
 {
-    protected $hidden = ['banner_id','delete_time','update_time'];
+    protected $hidden = ['id', 'img_id', 'banner_id', 'delete_time', 'update_time'];
+
     /**
      * @return \think\model\relation\BelongsTo
      */
-    public function img(){
-        return $this->belongsTo('Image','img_id','id');
+    public function img()
+    {
+        return $this->belongsTo('Image', 'img_id', 'id');
     }
 }

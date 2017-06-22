@@ -4,8 +4,14 @@ namespace app\api\model;
 
 use think\Model;
 
-class Image extends Model
+class Image extends BaseModel
 {
-    //
-    protected $hidden = ['from','delete_time','update_time'];
+    //过滤不需要的字段
+    protected $hidden = ['id', 'from', 'delete_time', 'update_time'];
+
+    public function getUrlAttr($value, $data)
+    {
+        return $this->prefixImgUrl($value, $data);
+    }
+
 }
