@@ -11,6 +11,10 @@ use think\Model;
 
 class BannerItem extends Model
 {
+    protected $hidden = ['banner_id','delete_time','update_time'];
+    /**
+     * @return \think\model\relation\BelongsTo
+     */
     public function img(){
         return $this->belongsTo('Image','img_id','id');
     }

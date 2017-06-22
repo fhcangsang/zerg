@@ -24,12 +24,14 @@ class Banner extends Model
      */
     public static function getBannerByID($id)
     {
-        //TODO:
+        /*//无关联查询
 //        $result = Db::query('select * from `banner_item` where banner_id=?', [$id]);
 //        $result  = Db::table('banner_item')->where('banner_id','=',$id)->select();
-        $result = Db::table('banner_item')->where(function ($query) use ($id) {
-            $query->where('banner_id', '=', $id);
-        })->select();
+//        $result = Db::table('banner_item')->where(function ($query) use ($id) {
+//            $query->where('banner_id', '=', $id);
+//        })->select();
+        */
+        $result = self::with(['items','items.img'])->find();
         return $result;
 
     }
