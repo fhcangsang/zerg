@@ -33,7 +33,7 @@ class Banner extends BaseModel
 //            $query->where('banner_id', '=', $id);
 //        })->select();
         */
-        $result = self::with(['items', 'items.img'])->find();
+        $result = self::with(['items', 'items.img'])->find($id);
         return $result;
 
     }
