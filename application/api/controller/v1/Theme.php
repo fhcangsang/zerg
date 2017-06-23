@@ -30,18 +30,25 @@ class Theme extends Controller
         $validate->goCheck();*/
         (new IDCollection())->goCheck();
 
-        $lists = ThemeModel::getSimpleList($ids);
-        if (!$lists) {
+        $result = ThemeModel::getSimpleList($ids);
+        if (!$result) {
             throw new ThemeException();
         }
-        return $lists;
+        return $result;
     }
 
-    /**
-     * @param $id 获取指定id 的专题（包含的商品）
+    /**获取指定的专题 /theme/:id
+     * @param $id
+     * @return array|false|\PDOStatement|string|\think\Model
+     * @throws \app\lib\exception\ParameterException
      */
     public function getComplexOne($id)
     {
         (new IDMustBePostiveInt())->goCheck();
+        $result = ThemeModel::getThemeWithProducts($id);
+        if(!$result){
+            throw new ThemeException();
+        }
+        return $result;
     }
 }
