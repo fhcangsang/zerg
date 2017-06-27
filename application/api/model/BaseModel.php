@@ -6,7 +6,7 @@ use think\Model;
 
 class BaseModel extends Model
 {
-    /**
+    /**转换成完整的图片url
      * @param $value
      * @param $data
      * @return string

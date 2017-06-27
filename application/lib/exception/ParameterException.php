@@ -15,7 +15,7 @@ class ParameterException extends BaseException
     public $msg = '参数错误';
     public $errorCode = 10000;
 
-    /**
+    /**验证类调用
      * @param array $params
      */
     public function __construct($params = []){

@@ -24,6 +24,7 @@ class Product extends BaseModel
     }
 
     /**
+     * 获取近期产品
      * @param $count
      * @return false|\PDOStatement|string|\think\Collection
      */
