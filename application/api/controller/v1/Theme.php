@@ -30,7 +30,8 @@ class Theme extends Controller
         $validate->goCheck();*/
         (new IDCollection())->goCheck();
 
-        $result = ThemeModel::getSimpleList($ids);
+        $result = ThemeModel::getSimpleList($ids); //返回数据集数组，没有数据则是 空数组
+//        $collection = collection($result); //数组转换为数据集对象
         if (!$result) {
             throw new ThemeException();
         }
@@ -45,8 +46,9 @@ class Theme extends Controller
     public function getComplexOne($id)
     {
         (new IDMustBePostiveInt())->goCheck();
-        $result = ThemeModel::getThemeWithProducts($id);
-        if(!$result){
+
+        $result = ThemeModel::getThemeWithProducts($id);//返回一个对象，如果没有数据则返回null
+        if (!$result) {
             throw new ThemeException();
         }
         return $result;

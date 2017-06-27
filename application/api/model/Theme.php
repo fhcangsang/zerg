@@ -47,6 +47,10 @@ class Theme extends BaseModel
         return $lists;
     }
 
+    /**
+     * @param $id
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
     public static function getThemeWithProducts($id)
     {
         $theme = self::with(['products','topicImg','headImg'])->find($id);

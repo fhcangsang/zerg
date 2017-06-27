@@ -7,7 +7,7 @@ class Index
 {
     public function index()
     {
-         return json_encode(['name'=>'mr','age'=>3,'color'=>'blue']);
+         return json(['name'=>'mr','age'=>3,'color'=>'blue']);
         
     }
 
