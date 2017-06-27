@@ -26,11 +26,12 @@ class Product extends Controller
         (new Count())->goCheck();
         $result = ProductModel::getMostRecent($count);
 
-        if(!$result){
+        if($result->isEmpty()){
             throw new ParameterException();
         }
-        $collection = collection($result);
-        $result = $collection->hidden(['summary']);
+        /*$collection = collection($result); //数组转换为数据集对象,或者修改config.php配置文件让其直接返回数据集
+        $result = $collection->hidden(['summary']);*/
+        $result = $result->hidden(['summary']);
         return $result;
     }
 }

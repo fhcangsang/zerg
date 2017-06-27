@@ -30,9 +30,17 @@ class Theme extends Controller
         $validate->goCheck();*/
         (new IDCollection())->goCheck();
 
-        $result = ThemeModel::getSimpleList($ids); //返回数据集数组，没有数据则是 空数组
-//        $collection = collection($result); //数组转换为数据集对象
+        /*$result = ThemeModel::getSimpleList($ids); //返回数数组，没有数据则是空数组
+
         if (!$result) {
+            throw new ThemeException();
+        }
+        // $collection = collection($result); //数组转换为数据集对象,或者修改database.php配置文件让其直接返回数据集
+        return $result;*/
+
+        $result = ThemeModel::getSimpleList($ids); //返回数据集
+
+        if ($result->isEmpty()) {
             throw new ThemeException();
         }
         return $result;
