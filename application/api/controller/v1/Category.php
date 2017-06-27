@@ -21,10 +21,10 @@ class Category extends Controller
      */
     public function getAllCategories()
     {
-        $categoryModel = new CategoryModel();
-        $categories = $categoryModel->with('img')->select();
+        /*$categoryModel = new CategoryModel();
+        $categories = $categoryModel->with('img')->select();*/
 
-//        $categories = CategoryModel::all(null,'img',true);
+        $categories = CategoryModel::all(null,'img',true);
         if($categories->isEmpty()){
             throw new CategoryException();
         }

@@ -36,4 +36,12 @@ class Product extends BaseModel
 
         return $products;
     }
+
+    //获取指定分类下的所有产品
+    public static function getProductsByCategoryID($id)
+    {
+        $products = self::where(['category_id' => $id])
+            ->select();
+        return $products;
+    }
 }
