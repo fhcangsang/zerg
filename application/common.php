@@ -33,3 +33,20 @@ if(!function_exists('curl_get')){
         return $file_contents;
     }
 }
+if(!function_exists('getRandChar')){
+    /**
+     * @param $length
+     * @return null|string 生成随机字符串
+     */
+    function getRandChar($length)
+    {
+        $str=null;
+        $strPol="ABCDEFGHIGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz";
+        $max=strlen($strPol)-1;
+        for($i=0;$i<$length;$i++)
+        {
+            $str.= $strPol[rand(0,$max)];
+        }
+        return $str;
+    }
+}

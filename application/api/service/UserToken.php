@@ -7,11 +7,12 @@
  */
 namespace app\api\service;
 
+use app\lib\exception\TokenException;
 use app\lib\exception\WeChatException;
 use think\Exception;
 use app\api\model\User as UserModel;
 
-class UserToken
+class UserToken extends Token
 {
     protected $code;
     protected $wxAppID;
@@ -36,7 +37,7 @@ class UserToken
     //code 获取 session_key 和 openid 并生成token令牌
     public function get()
     {
-        $result = curl_get($this->wxLoginUrl);//微信服务返回的openid
+        $result = curl_get($this->wxLoginUrl);//微信服务返回的openid,session_key...
         $wxResult = json_decode($result, true);
         if (empty($wxResult)) {
             throw new Exception('获取 session_key 和 openid异常，微信内部错误');
@@ -45,7 +46,7 @@ class UserToken
             if ($loginFail) {
                 $this->processLoginError($wxResult);
             } else {
-                $this->granToken($wxResult);
+                return $this->granToken($wxResult);
             }
 
         }
@@ -76,7 +77,9 @@ class UserToken
         } else {//user 不存在openid 添加新 用户
             $uid = $this->newUser($openid);
         }
-        $this->prepareCachedValue($wxResult,$uid);
+        $cachedValue = $this->prepareCachedValue($wxResult, $uid);
+        $token = $this->saveToCache($cachedValue);
+        return $token;
     }
 
     //新增用户
@@ -97,13 +100,33 @@ class UserToken
      * @param $uid
      * 重组缓存数据
      */
-    private function prepareCachedValue($wxResult,$uid)
+    private function prepareCachedValue($wxResult, $uid)
     {
         $cachedValue = $wxResult;
-        $cachedValue['uid']=$uid;
-        $cachedValue['scope']=16;
+        $cachedValue['uid'] = $uid;
+        $cachedValue['scope'] = 16;
         return $cachedValue;
     }
 
+    /**
+     * @param $cachedValue
+     * @return string
+     * @throws TokenException
+     * 缓存数据 并返回 token
+     */
+    private function saveToCache($cachedValue)
+    {
+        $key = self::generateToken(); //以token 为键名
+        $value = json_encode($cachedValue);
+        $expire_in = config('setting.token_expire_in');
+        $request = cache($key, $value, $expire_in);
+        if (!$request) {
+            throw new TokenException([
+                'msg' => '服务器缓存错误',
+                'errorCode' => 10005
+            ]);
+        }
+        return $key;
+    }
 
 }

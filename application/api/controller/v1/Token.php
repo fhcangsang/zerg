@@ -18,6 +18,6 @@ class Token extends Controller
         (new TokenGet())->goCheck();
         $ut = new UserToken($code);
         $token = $ut->get();
-//        return $token;
+        return ['token' => $token];
     }
 }
