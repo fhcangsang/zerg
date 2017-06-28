@@ -14,4 +14,8 @@ class Count extends BaseValidate
     protected $rule =  [
       'count' => 'isPositiveInteger|between:1,15'
     ];
+
+    protected $message = [
+        'count' => 'count参数必须是1~15的正整数',
+    ];
 }
