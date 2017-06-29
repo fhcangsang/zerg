@@ -42,10 +42,21 @@ class Product extends Controller
         (new IDMustBePostiveInt())->goCheck();
 
         $result = ProductModel::getProductsByCategoryID($id);
-        if($result->isEmpty()){
+        if ($result->isEmpty()) {
             throw new ProductException();
         }
         $result = $result->hidden(['summary']);
+        return $result;
+    }
+
+    //商品详情
+    public function getOne($id)
+    {
+        (new IDMustBePostiveInt())->goCheck();
+        $result = ProductModel::getProductDetail($id);
+        if(!$result){
+            throw new ProductException();
+        }
         return $result;
     }
 }

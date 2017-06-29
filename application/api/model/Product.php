@@ -11,7 +11,7 @@ namespace app\api\model;
 
 class Product extends BaseModel
 {
-    protected $hidden = ['delete_time', 'from', 'create_time', 'update_time', 'pivot', 'category_id', 'img_id',];
+    protected $hidden = ['delete_time', 'from', 'create_time', 'update_time', 'category_id', 'img_id',];
 
     public function getMainImgUrlAttr($value, $data)
     {
@@ -20,7 +20,12 @@ class Product extends BaseModel
 
     public function images()
     {
-        return $this->belongsToMany('Image', 'product_image', 'img_id', 'product_id');
+        return $this->hasMany('ProductImage','product_id','id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany('ProductProperty','product_id','id');
     }
 
     /**
@@ -30,7 +35,7 @@ class Product extends BaseModel
      */
     public static function getMostRecent($count)
     {
-        $products = self::with('images')->limit($count)
+        $products = self::limit($count)
             ->order('create_time', 'desc')
             ->select();
 
@@ -43,5 +48,15 @@ class Product extends BaseModel
         $products = self::where(['category_id' => $id])
             ->select();
         return $products;
+    }
+
+    //商品详情
+    public static function  getProductDetail($id)
+    {
+//        $product = self::with(['images','properties','images.imgUrl'])->find($id);
+        $product = self::with(['images'=>function($query){
+            $query->with(['imgUrl'])->order('order','asc');
+        },'properties'])->find($id);
+        return $product;
     }
 }
