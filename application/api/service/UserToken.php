@@ -34,10 +34,10 @@ class UserToken extends Token
         $this->wxLoginUrl = config('wx.login_url') . $param;
     }
 
-    //code 获取 session_key 和 openid 并生成token令牌
+    //通过code 获取 session_key 和 openid, 并生成token令牌
     public function get()
     {
-        $result = curl_get($this->wxLoginUrl);//微信服务返回的openid,session_key...
+        $result = curl_get($this->wxLoginUrl);//微信服务返回的openid,session_key,expire_in
         $wxResult = json_decode($result, true);
         if (empty($wxResult)) {
             throw new Exception('获取 session_key 和 openid异常，微信内部错误');

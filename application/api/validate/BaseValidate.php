@@ -24,6 +24,42 @@ class BaseValidate extends Validate
         }
     }
 
+    //根据验证规则过滤数据
+    public function getDataByRule($params)
+    {
+        if (array_key_exists('user_id', $params) || array_key_exists('uid', $params)) {
+            throw new ParameterException([
+                'msg' => '参数中包含非法参数名user_uid或者uid'
+            ]);
+        }
+        $newParams = [];
+        foreach ($this->rule as $k => $v) {
+            $newParams[$k] = $params[$k];
+        }
+        return $newParams;
+    }
+
+    //根据验证规则过滤数据
+    public function getDataByRule2($params, $filter = [])
+    {
+        if (!empty($filter)) {
+            foreach ($filter as $k => $v) {
+                if (array_key_exists($v, $params)) {
+                    throw new ParameterException([
+                        'msg' => '参数中包含非法参数名:' . $v
+                    ]);
+                }
+            }
+        }
+
+        $newParams = [];
+        foreach ($this->rule as $k => $v) {
+            $newParams[$k] = $params[$k];
+        }
+        return $newParams;
+    }
+
+    //必须是正整数
     protected function isPositiveInteger($value, $rule = '', $date = '', $field = '')
     {
         if (is_numeric($value) && is_int($value + 0) && ($value + 0) > 0) {
@@ -34,12 +70,14 @@ class BaseValidate extends Validate
         }
     }
 
-    protected function isNotEmpty($value,$rule='',$date='',$field=''){
-       /* if(empty($value)){
-            return false;
-        }else{
-            return true;
-        }*/
+    //不为空
+    protected function isNotEmpty($value, $rule = '', $date = '', $field = '')
+    {
+        /* if(empty($value)){
+             return false;
+         }else{
+             return true;
+         }*/
 
         return empty($value) ? false : true;
     }

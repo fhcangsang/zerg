@@ -11,6 +11,10 @@ namespace app\api\model;
 
 class User extends BaseModel
 {
+    public function address()
+    {
+        return $this->hasOne('UserAddress','user_id','id');
+    }
     /**
      * @param $openid
      * @return array|false|\PDOStatement|string|\think\Model
@@ -21,4 +25,15 @@ class User extends BaseModel
         $user = self::where('openid','=',$openid)->find();
         return $user;
     }
+
+    /**
+     * 根据id 查找用户信息
+     * @param $uid
+     * @return array|false|\PDOStatement|string|\think\Model
+     */
+    public static function getUserInfoByID($uid){
+        $user = self::with('address')->find($uid);
+        return $user;
+    }
+
 }

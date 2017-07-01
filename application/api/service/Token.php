@@ -31,17 +31,19 @@ class Token
     }
 
 
-    //根据token读取缓存的用户信息
+    //根据token读取缓存的用户信息 获取指定的 key 值
     /**
-     * @param $key 获取指定的 key 值
+     * @param $key
+     * @return mixed
+     * @throws Exception
      * @throws TokenException
      */
     public static function getCurrentTokenVar($key)
     {
-        $token = Request::instance()->header('token'); //获取http header 的token值
+        $token = Request::instance()->header('token'); //获取http header头的token值
 
         $userInfo = Cache::get($token);
-        if (!$userInfo) { //判断缓存是否存在
+        if (!$userInfo) { //判断缓存是否存在，验证token
             throw new TokenException();
         } else {
             if (!is_array($userInfo)) {
@@ -50,7 +52,7 @@ class Token
             if (array_key_exists($key, $userInfo)) {
                 return $userInfo[$key];
             } else {
-                throw new Exception('尝试获取的token变量不存在');
+                throw new Exception('获取的token变量不存在');
             }
         }
     }
