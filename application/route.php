@@ -45,3 +45,6 @@ Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories'
 
 //http://test.tp5.com/api/v1/token/user  post 传参 {"code":"0038DXpA1m0D9i0eeeoA1nn2qA18DXpQ"}
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
+
+
+Route::post('api/:version/address','api/:version.Address/createOrUpdateAddress');
