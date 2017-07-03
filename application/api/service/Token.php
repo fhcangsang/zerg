@@ -8,11 +8,12 @@
 
 namespace app\api\service;
 
-
+use app\lib\exception\ForbiddenException;
 use app\lib\exception\TokenException;
 use think\Cache;
 use think\Exception;
 use think\Request;
+use app\lib\enum\ScopeEnum;
 
 class Token
 {
@@ -61,6 +62,51 @@ class Token
     public static function getCurrentUid()
     {
         return self::getCurrentTokenVar('uid');
+    }
+
+    /**
+     * 权限认证
+     * @return bool
+     * @throws ForbiddenException
+     * @throws TokenException
+     * @throws \think\Exception
+     * 管理员，用户都有的权限
+     */
+    public static function needPrimaryScope()
+    {
+        $scope = self::getCurrentTokenVar('scope');
+        if ($scope) {
+            if ($scope >= ScopeEnum::User) {
+                return true;
+            } else {
+                throw new ForbiddenException();
+            }
+        } else {
+            throw new TokenException();
+        }
+
+    }
+
+    /**
+     * 权限认证
+     * @return bool
+     * @throws ForbiddenException
+     * @throws TokenException
+     * @throws \think\Exception
+     * 只有用户有的权限
+     */
+    public static function needExclusiveScope()
+    {
+        $scope = self::getCurrentTokenVar('scope');
+        if ($scope) {
+            if ($scope == ScopeEnum::User) {
+                return true;
+            } else {
+                throw new ForbiddenException();
+            }
+        } else {
+            throw new TokenException();
+        }
     }
 
 }

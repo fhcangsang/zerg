@@ -83,7 +83,7 @@ class BaseValidate extends Validate
     }
 
     //验证手机号
-    public function isMobile($value)
+    protected  function isMobile($value)
     {
         $rule = '^1(1|3|4|5|7|8)[0-9]\d{8}$^';
         $result = preg_match($rule, $value);
