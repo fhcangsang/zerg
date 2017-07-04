@@ -70,7 +70,7 @@ class BaseValidate extends Validate
         }
     }
 
-    //不为空
+    //值不为空
     protected function isNotEmpty($value, $rule = '', $date = '', $field = '')
     {
         /* if(empty($value)){
