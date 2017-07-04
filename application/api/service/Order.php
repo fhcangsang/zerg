@@ -10,7 +10,9 @@ namespace app\api\service;
 
 
 use app\api\model\Product;
+use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
+use app\lib\exception\UserException;
 
 class Order
 {
@@ -27,27 +29,69 @@ class Order
         $this->uid = $uid;
         $this->products = $this->getProductsByOrder($oProducts);
         $status = $this->getOrderStatus();
-        if(!$status['pass']){//订单检测不通过
+        if (!$status['pass']) {//订单检测不通过
             $status['order_id'] = -1;
             return $status;
         }
         //创建订单
+        $orderSnap = $this->snapOrder($status);
     }
 
+    //生成订单快照
+    private function snapOrder($status)
+    {
+        $snap = [
+            'orderPrice' => 0,
+            'totalCount' => 0,
+            'pStatus' => [],
+            'snapAddress' => null,
+            'snapImg' => '',
+            'snapName' => ''
+        ];
+        $snap['orderPrice'] = $status['orderPrice'];
+        $snap['totalCount'] = $status['totalCount'];
+        $snap['pStatus'] = $status['pStatusArray'];
+        $snap['snapAddress'] = json_encode($this->getUserAddress());
+        $snap['snapImg'] = $this->products[0]['main_img_url'];
+        $snap['snapName'] = $this->products[0]['name'];
+        if(count($this->products) > 1){
+            $snap['snapName'] .= '等';
+        }
+    }
+
+    private function getUserAddress()
+    {
+        $userAddress = (new UserAddress())->where('user_id','=',$this->uid)->find();
+        if(!$userAddress){
+            throw new UserException([
+                'msg' => '用户地址不存在，下单失败',
+                'errorCode' => 60001
+            ]);
+        }
+        return $userAddress->toArray();
+    }
+
+
+    /**
+     * @return array
+     * @throws OrderException
+     */
     private function getOrderStatus()
     {
         $status = [
             'pass' => true,
             'orderPrice' => 0,
+            'totalCount' => 0,
             'pStatusArray' => []
         ];
         foreach ($this->oProducts as $product) {
-            $pStatus = $this->getProductStatus($product['product_id'],$product['count'],$this->products);
-            if(!$pStatus['haveStock']){
+            $pStatus = $this->getProductStatus($product['product_id'], $product['count'], $this->products);
+            if (!$pStatus['haveStock']) {
                 $status['pass'] = false;
             }
             $status['orderPrice'] += $pStatus['totalPrice'];
-            array_push($status['pStatusArray'],$pStatus);
+            $status['totalCount'] += $pStatus['count'];
+            array_push($status['pStatusArray'], $pStatus);
         }
         return $status;
     }
