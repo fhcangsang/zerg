@@ -49,4 +49,7 @@ Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 //http://test.tp5.com/api/v1/address
 Route::post('api/:version/address','api/:version.Address/createOrUpdateAddress');
 
+//http://test.tp5.com/api/v1/order
 Route::post('api/:version/order','api/:version.Order/placeOrder');
+
+Route::post('api/:version/pay/pre_order','api/:version.Pay/getPreOrder');

@@ -3,5 +3,6 @@ return [
     'app_id' => 'wxf758e4f77b87002b',
     'app_secret' => '3a9f4b1820d4c10ba4b1ace1ca358a60',
     //code 获取 session_key 和 openid的 url
-    'login_url' => 'https://api.weixin.qq.com/sns/jscode2session?'
+    'login_url' => 'https://api.weixin.qq.com/sns/jscode2session?',
+    'pay_url' => 'https://api.mch.weixin.qq.com/pay/unifiedorder',//统一下单
 ];
