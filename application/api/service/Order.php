@@ -9,10 +9,12 @@
 namespace app\api\service;
 
 
+use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
+use think\Exception;
 
 class Order
 {
@@ -35,6 +37,49 @@ class Order
         }
         //创建订单
         $orderSnap = $this->snapOrder($status);
+        $order = $this->createOrder($orderSnap);
+        $order['pass'] = true;
+        return $order;
+    }
+
+    //生成订单
+    private function createOrder($snap)
+    {
+        try {
+            $orderNo = $this->makeOrderNo();
+            $order = new \app\api\model\Order();
+            $order->user_id = $this->uid;
+            $order->order_no = $orderNo;
+            $order->total_price = $snap['orderPrice'];
+            $order->total_count = $snap['totalCount'];
+            $order->snap_img = $snap['snapImg'];
+            $order->snap_name = $snap['snapName'];
+            $order->snap_address = $snap['snapAddress'];
+            $order->snap_items = json_encode($snap['pStatus']);
+            $order->save();
+            $orderID = $order->id;
+            $createTime = $order->create_time;
+            foreach ($this->oProducts as &$p) {
+                $p['order_id'] = $orderID;
+            }
+            $orderProduct = new OrderProduct();
+            $orderProduct->saveAll($this->oProducts);
+            return [
+                'order_no' => $orderNo,
+                'order_id' => $orderID,
+                'create_time' => $createTime
+            ];
+        } catch (Exception $e) {
+            throw $e;
+        }
+    }
+
+    //生成订单号
+    public static function makeOrderNo()
+    {
+        $yCode = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        $orderSn = $yCode[intval(date('Y') - 2017)] . strtoupper(dechex(date('m'))) . date('d') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf('%02d', rand(0, 99));
+        return $orderSn;
     }
 
     //生成订单快照
@@ -54,15 +99,16 @@ class Order
         $snap['snapAddress'] = json_encode($this->getUserAddress());
         $snap['snapImg'] = $this->products[0]['main_img_url'];
         $snap['snapName'] = $this->products[0]['name'];
-        if(count($this->products) > 1){
+        if (count($this->products) > 1) {
             $snap['snapName'] .= '等';
         }
+        return $snap;
     }
 
     private function getUserAddress()
     {
-        $userAddress = (new UserAddress())->where('user_id','=',$this->uid)->find();
-        if(!$userAddress){
+        $userAddress = (new UserAddress())->where('user_id', '=', $this->uid)->find();
+        if (!$userAddress) {
             throw new UserException([
                 'msg' => '用户地址不存在，下单失败',
                 'errorCode' => 60001
