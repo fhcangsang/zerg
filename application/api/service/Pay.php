@@ -32,6 +32,11 @@ class Pay
         $this->orderID = $orderID;
     }
 
+    /**
+     * @return \|array
+     * @throws OrderException
+     * @throws TokenException
+     */
     public function pay()
     {
         $this->checkOrderValid();
@@ -44,6 +49,12 @@ class Pay
         return $this->makeWxPreOrder($status['orderPrice']);
     }
 
+    /**
+     * @return bool
+     * @throws Exception
+     * @throws OrderException
+     * @throws TokenException
+     */
     private function checkOrderValid()
     {
         //检测数据库是否存在该订单
@@ -71,7 +82,14 @@ class Pay
         return true;
     }
 
-    //请求微信预订单
+
+    /**
+     * //请求微信预订单
+     * @param $totalPrice
+     * @return \
+     * @throws Exception
+     * @throws TokenException
+     */
     private function makeWxPreOrder($totalPrice)
     {
         $openid = Token::getCurrentTokenVar('openid');
@@ -79,31 +97,73 @@ class Pay
             throw new TokenException();
         }
         //参数设置
-        $wxOrderData = new \WxPayUnifiedOrder();
+        $wxOrderData = new \WxPayUnifiedOrder();//统一下单输入对象
         $wxOrderData->SetOut_trade_no($this->orderNO);
         $wxOrderData->SetTrade_type('JSAPI');
-        $wxOrderData->SetTotal_fee($totalPrice*100);
+        $wxOrderData->SetTotal_fee($totalPrice * 100);
         $wxOrderData->SetBody('零食商贩');
         $wxOrderData->SetOpenid($openid);
         $wxOrderData->SetNotify_url('http://test.tp5.com');
 
         return $this->getPaySignature($wxOrderData);
     }
-    //请求微信预订单
+
+    /**
+     * //请求微信预订单
+     * @param $wxOrderData
+     * @return \-成功时返回
+     * @throws \WxPayException
+     */
     private function getPaySignature($wxOrderData)
     {
         $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
 //        var_dump($wxOrder);
-        if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result'] != 'SUCCESS'){
+        if ($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result'] != 'SUCCESS') {
             Log::init([
                 'type' => 'File',
-                'path' => ROOT_PATH. 'log' .DS,
+                'path' => ROOT_PATH . 'log' . DS,
                 'level' => ['error']
             ]);
-            Log::record($wxOrder,'error');
-            Log::record('获取预支付订单失败','error');
+            Log::record($wxOrder, 'error');
+            Log::record('获取预支付订单失败', 'error');
         }
-
+         //prepay_id
+//        $this->recordPreOrder($wxOrder);
+//        $rawValues = $this->sign($wxOrder);
+//        return $rawValues;
         return $wxOrder;
     }
+
+    /**
+     * @param $wxOrder
+     * @return array
+     */
+    private function sign($wxOrder)
+    {
+        //生成签名,并返回小程序调起支付API 所需参数
+        $jsApiPayData = new \WxPayJsApiPay();
+        $jsApiPayData->SetAppid(config('wx.app_id'));
+        $jsApiPayData->SetTimeStamp((string)time());
+        $rand = md5(time() . mt_rand(0, 1000));
+        $jsApiPayData->SetNonceStr($rand);
+        $jsApiPayData->SetPackage('prepay_id=' . $wxOrder['prepay_id']);
+        $jsApiPayData->SetSignType('md5');
+
+        $sign = $jsApiPayData->MakeSign();
+        $rawValues = $jsApiPayData->GetValues();
+        $rawValues['paySign'] = $sign;
+        unset($rawValues['appId']);
+        return $rawValues;
+    }
+
+    /**
+     * @param $wxOrder
+     * 更新order表 prepay_id字段
+     */
+    private function recordPreOrder($wxOrder)
+    {
+        //prepay_id 用于向用户发送 模板消息
+        (new OrderModel())->where('id', '=', $this->orderID)->update(['prepay_id' => $wxOrder['prepay_id']]);
+    }
+
 }
