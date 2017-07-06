@@ -8,8 +8,16 @@
 
 namespace app\api\service;
 
-
+use app\api\model\Order as OrderModel;
+use app\api\service\Order as OrderService;
+use app\lib\enum\OrderStatusEnum;
+use app\lib\exception\OrderException;
+use app\lib\exception\TokenException;
 use think\Exception;
+use think\Loader;
+use think\Log;
+
+Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
 
 class Pay
 {
@@ -18,10 +26,84 @@ class Pay
 
     function __construct($orderID)
     {
-        if(!$orderID){
+        if (!$orderID) {
             throw new Exception('订单号不允许为NULL');
         }
         $this->orderID = $orderID;
     }
 
+    public function pay()
+    {
+        $this->checkOrderValid();
+        //进行库存量检测
+        $orderService = new OrderService();
+        $status = $orderService->checkOrderStock($this->orderID);
+        if (!$status['pass']) {
+            return $status;
+        }
+        return $this->makeWxPreOrder($status['orderPrice']);
+    }
+
+    private function checkOrderValid()
+    {
+        //检测数据库是否存在该订单
+        $order = OrderModel::where('id', '=', $this->orderID)->find();
+        if (!$order) {
+            throw new OrderException();
+        }
+
+        if (!Token::checkValidPerate($order->user_id)) { //订单号与当前用户是否匹配
+            throw new TokenException([
+                'msg' => '订单ID与用户ID不匹配',
+                'errorCode' => 10003
+            ]);
+        }
+
+        if ($order->status != OrderStatusEnum::UNPAID) { //检查订单是否已支付
+            throw new OrderException([
+                'msg' => '订单已支付过啦',
+                'errorCode' => 80003,
+                'code' => 400
+            ]);
+        }
+
+        $this->orderNO = $order->order_no;
+        return true;
+    }
+
+    //请求微信预订单
+    private function makeWxPreOrder($totalPrice)
+    {
+        $openid = Token::getCurrentTokenVar('openid');
+        if (!$openid) {
+            throw new TokenException();
+        }
+        //参数设置
+        $wxOrderData = new \WxPayUnifiedOrder();
+        $wxOrderData->SetOut_trade_no($this->orderNO);
+        $wxOrderData->SetTrade_type('JSAPI');
+        $wxOrderData->SetTotal_fee($totalPrice*100);
+        $wxOrderData->SetBody('零食商贩');
+        $wxOrderData->SetOpenid($openid);
+        $wxOrderData->SetNotify_url('http://test.tp5.com');
+
+        return $this->getPaySignature($wxOrderData);
+    }
+    //请求微信预订单
+    private function getPaySignature($wxOrderData)
+    {
+        $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
+//        var_dump($wxOrder);
+        if($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result'] != 'SUCCESS'){
+            Log::init([
+                'type' => 'File',
+                'path' => ROOT_PATH. 'log' .DS,
+                'level' => ['error']
+            ]);
+            Log::record($wxOrder,'error');
+            Log::record('获取预支付订单失败','error');
+        }
+
+        return $wxOrder;
+    }
 }

@@ -46,10 +46,11 @@ Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories'
 //http://test.tp5.com/api/v1/token/user  post 传参 {"code":"0038DXpA1m0D9i0eeeoA1nn2qA18DXpQ"}
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 
-//http://test.tp5.com/api/v1/address
+//http://test.tp5.com/api/v1/address  参数 header传 token值,post传地址等信息
 Route::post('api/:version/address','api/:version.Address/createOrUpdateAddress');
 
-//http://test.tp5.com/api/v1/order
+//http://test.tp5.com/api/v1/order  参数 header传 token值
 Route::post('api/:version/order','api/:version.Order/placeOrder');
 
+//http://test.tp5.com/api/v1/pay/pre_order  参数 header传 token值,post传 id (订单id)
 Route::post('api/:version/pay/pre_order','api/:version.Pay/getPreOrder');

@@ -101,7 +101,7 @@ Page({
           },
           {
             "product_id": 11,
-            "count": 3
+            "count": 8
           }
         ]
       },
@@ -109,6 +109,12 @@ Page({
       //header:{},
       success: function (res) {
         console.log(res.data);
+        if(res.data.pass){
+          wx.setStorageSync('order_id', res.data.order_id);
+          that.getPreOrder(token,res.data.order_id);
+        }else{
+          console.log('订单未创建成功');
+        }
       }, 
       fail: function () {
         //fail 
@@ -117,6 +123,42 @@ Page({
         //complete
       }
     });
+  },
+  getPreOrder: function(token,order_id){
+    //var token = wx.getStorageSync('token');
+    //var order_id = wx.getStorageSync('order_id');
+    if(token){
+      wx.request({
+        url: baseUrl + '/pay/pre_order',
+        header: {
+          token: token
+        },
+        data: {
+          id: order_id
+        },
+        method: 'POST',//OPTION,GET,HEAD,POST,PUT,DELETE,TRACE,CONNECT
+        success: function (res) {
+            var preData = res.data;
+            console.log(preData);
+            /*wx.requestPayment({
+              timeStamp:preData.timeStamp.toString(),
+              nonceStr:preData.nonceStr,
+              package:preData.package,
+              signType:preData.paySign,
+              success: function(res){
+                console.log(res.data);
+              },
+              fail: function (error) {
+                console.log(error);
+              }
+            })*/
+        },
+        fail: function () {
+          console.log('session fail');
+        },
+        complete: function () { },
+      })
+    }
   },
   checkSession: function (){
     wx.checkSession({

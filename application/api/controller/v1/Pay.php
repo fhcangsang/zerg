@@ -11,6 +11,7 @@ namespace app\api\controller\v1;
 
 use app\api\controller\BaseController;
 use app\api\validate\IDMustBePostiveInt;
+use app\api\service\Pay as PayService;
 
 class Pay extends BaseController
 {
@@ -20,5 +21,8 @@ class Pay extends BaseController
     //请求微信服务器预订单信息
     public function getPreOrder($id = ''){
         (new IDMustBePostiveInt())->goCheck();
+
+        $payService = new PayService($id);
+        return $payService->pay();
     }
 }

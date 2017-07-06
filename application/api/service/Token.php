@@ -109,4 +109,21 @@ class Token
         }
     }
 
+    /**
+     * @param $checkUID
+     * @return bool
+     * @throws Exception
+     * 检测当前用户是否匹配
+     */
+    public static function checkValidPerate($checkUID)
+    {
+        if(!$checkUID){
+            throw new Exception("必须传入要检测的UID");
+        }
+        $currentUid = self::getCurrentUid();//当前用户UID
+        if($currentUid == $checkUID){
+            return true;
+        }
+        return false;
+    }
 }

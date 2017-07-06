@@ -36,7 +36,7 @@ class Order
             $status['order_id'] = -1;
             return $status;
         }
-        //创建订单
+        //创建订单（生成订单快照-->写入数据库生成订单）
         $orderSnap = $this->snapOrder($status);
         $order = $this->createOrder($orderSnap);
         $order['pass'] = true;
@@ -109,6 +109,11 @@ class Order
         return $snap;
     }
 
+    /**
+     * @return array
+     * @throws UserException
+     * 获取用户地址
+     */
     private function getUserAddress()
     {
         $userAddress = (new UserAddress())->where('user_id', '=', $this->uid)->find();
@@ -121,8 +126,23 @@ class Order
         return $userAddress->toArray();
     }
 
+    /**
+     * 支付pay用,根据orderID查询出oProduct(用户下单商品)去找出对应的真实商品
+     * 然后获取订单状态
+     * @param $orderID
+     * @return array
+     */
+    public function checkOrderStock($orderID)
+    {
+        $orderProduct = new OrderProduct();
+        $this->oProducts = $orderProduct->where('order_id','=',$orderID)->select();//根据orderID查询出oProduct(用户下单商品)
+        $this->products = $this->getProductsByOrder($this->oProducts); //出对应的真实商品
+        $status = $this->getOrderStatus();//获取订单状态
+        return $status;
+    }
 
     /**
+     * 订单状态,库存检查
      * @return array
      * @throws OrderException
      */
@@ -134,8 +154,8 @@ class Order
             'totalCount' => 0,
             'pStatusArray' => []
         ];
-        foreach ($this->oProducts as $product) {
-            $pStatus = $this->getProductStatus($product['product_id'], $product['count'], $this->products);
+        foreach ($this->oProducts as $oProduct) {
+            $pStatus = $this->getProductStatus($oProduct['product_id'], $oProduct['count'], $this->products);
             if (!$pStatus['haveStock']) {
                 $status['pass'] = false;
             }
@@ -147,7 +167,7 @@ class Order
     }
 
     /**
-     * 设置单个商品的状态
+     * 设置单个商品的状态，库存检查
      * @param $oPID -订单中某个商品的 product_id-
      * @param $oCount -订单中某个商品的购买数量-
      * @param $products -数据库查询出的商品-

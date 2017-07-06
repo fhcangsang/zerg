@@ -20,6 +20,10 @@ class Order extends BaseController
         'checkExclusiveScope' => ['only' => 'placeOrder']
     ];
 
+    /**下订单
+     * @return array -下单结果，成功失败都有返回
+     * @throws \app\lib\exception\ParameterException
+     */
     public function placeOrder()
     {
 
