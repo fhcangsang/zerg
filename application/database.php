@@ -13,15 +13,15 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => 'sqld.duapp.com',
+    'hostname'        => 'localhost',
     // 数据库名
-    'database'        => 'BIuAHEWvTkLGYHqXdyHm',
+    'database'        => 'tp5',
     // 用户名
-    'username'        => 'fc66d0577fbf41459d680d14cba23506',
+    'username'        => 'root',
     // 密码
-    'password'        => '07e46ee62cb44a9795902e80a7e45d17',
+    'password'        => '123456',
     // 端口
-    'hostport'        => '4050',
+    'hostport'        => '3306',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
