@@ -24,13 +24,13 @@ use think\Route;
 
 Route::rule('test/:id', 'index/Index/test');
 
-http://test.tp5.com/api/v1/banner/1
-Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner',[],['id'=>'\d+']);
+//http://test.tp5.com/api/v1/banner/1
+Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
 
 //http://test.tp5.com/api/v1/theme?ids=1,2,3
 Route::get('api/:version/theme', 'api/:version.Theme/getSimpleList');
 //http://test.tp5.com/api/v1/theme/2
-Route::get('api/:version/theme/:id', 'api/:version.Theme/getComplexOne',[],['id'=>'\d+']);
+Route::get('api/:version/theme/:id', 'api/:version.Theme/getComplexOne');
 
 
 //http://test.tp5.com/api/v1/product/by_category?id=2
