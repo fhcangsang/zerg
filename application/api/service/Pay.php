@@ -128,10 +128,10 @@ class Pay
             Log::record('获取预支付订单失败', 'error');
         }
          //prepay_id
-//        $this->recordPreOrder($wxOrder);
-//        $rawValues = $this->sign($wxOrder);
-//        return $rawValues;
-        return $wxOrder;
+        $this->recordPreOrder($wxOrder);
+        $rawValues = $this->sign($wxOrder);
+        return $rawValues;
+//        return $wxOrder;
     }
 
     /**

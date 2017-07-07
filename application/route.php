@@ -36,7 +36,7 @@ Route::get('api/:version/theme/:id', 'api/:version.Theme/getComplexOne');
 //http://test.tp5.com/api/v1/product/by_category?id=2
 Route::get('api/:version/product/by_category', 'api/:version.Product/getAllInCategory');
 //http://test.tp5.com/api/v1/product/11
-Route::get('api/:version/product/:id', 'api/:version.Product/getOne',[],['id'=>'\d+']);
+Route::get('api/:version/product/:id', 'api/:version.Product/getOne',[],['id'=>'^(-?\d+)(\.\d+)?']);
 //http://test.tp5.com/api/v1/product/recent?count=3
 Route::get('api/:version/product/recent', 'api/:version.Product/getRecent');
 
