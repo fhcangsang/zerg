@@ -11,7 +11,10 @@ namespace app\api\service;
 use app\api\model\Order as OrderModel;
 use app\api\model\Product;
 use app\lib\enum\OrderStatusEnum;
+use think\Db;
+use think\Exception;
 use think\Loader;
+use think\Log;
 
 Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
 
@@ -21,19 +24,29 @@ class WxNotify extends \WxPayNotify
     {
         if ($data['result_code'] == 'SUCCESS') {
             $orderNo = $data['out_trade_no'];//订单号
+            Db::startTrans();
             try {
-                $order = (new OrderModel)->where('order_no', '=', $orderNo);//订单详情
+                $order = (new OrderModel)->where('order_no', '=', $orderNo)->find();//订单详情
                 if ($order['status'] == 1) {//未支付的订单才去处理
                     $orderService = new Order();
-                    $stockStatus = $orderService->checkOrderStock($order['id']);//检查库存量
+                    $stockStatus = $orderService->checkOrderStock($order->id);//检查库存量
                     if ($stockStatus['pass']) {
-                        $this->updateOrderStatus($order['id'], true);//更新订单状态
+                        $this->updateOrderStatus($order->id, true);//更新订单状态
                         $this->reduceStock($stockStatus);//减库存
+                    } else {
+                        $this->updateOrderStatus($order->id, false);
                     }
-                }
-            } catch (\WxPayException $e) {
 
+                }
+                Db::commit();
+                return true;
+            } catch (Exception $e) {
+                Db::rollback();
+                Log::record($e);
+                return false;
             }
+        }else{
+            return true;
         }
 
     }
