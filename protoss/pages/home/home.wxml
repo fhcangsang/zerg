@@ -1,0 +1,6 @@
+<!--home.wxml-->
+<view class="classname">
+  <swiper></swiper>
+  <view class="classname">
+  </view>
+</view>

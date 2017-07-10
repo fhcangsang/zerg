@@ -101,7 +101,7 @@ Page({
           },
           {
             "product_id": 11,
-            "count": 8
+            "count": 18
           }
         ]
       },
@@ -111,7 +111,7 @@ Page({
         console.log(res.data);
         if(res.data.pass){
           wx.setStorageSync('order_id', res.data.order_id);
-          that.getPreOrder(token,res.data.order_id);
+          //that.getPreOrder(token,res.data.order_id); //下单后直接进行支付
         }else{
           console.log('订单未创建成功');
         }
@@ -124,9 +124,9 @@ Page({
       }
     });
   },
-  getPreOrder: function(token,order_id){
-    //var token = wx.getStorageSync('token');
-    //var order_id = wx.getStorageSync('order_id');
+  getPreOrder: function(token='',order_id=''){
+    var token = wx.getStorageSync('token');
+    var order_id = wx.getStorageSync('order_id');
     if(token){
       wx.request({
         url: baseUrl + '/pay/pre_order',

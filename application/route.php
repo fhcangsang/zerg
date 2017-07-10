@@ -46,13 +46,17 @@ Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories'
 //http://test.tp5.com/api/v1/token/user  post 传参 {"code":"0038DXpA1m0D9i0eeeoA1nn2qA18DXpQ"}
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 
-//http://test.tp5.com/api/v1/address  参数 header传 token值,post传地址等信息
+//http://test.tp5.com/api/v1/address  参数 header传 token值,post传地址等信息.
 Route::post('api/:version/address','api/:version.Address/createOrUpdateAddress');
 
-//http://test.tp5.com/api/v1/order  参数 header传 token值
+//http://test.tp5.com/api/v1/order  参数 header传 token值,post传products=>['product_id'=>1,'count'=>3].
 Route::post('api/:version/order','api/:version.Order/placeOrder');
+//http://test.tp5.com/api/v1/order/by_user?page=2&size=12 参数 header传 token值
+Route::get('api/:version/order/by_user','api/:version.Order/getSummaryByUser');
+//http://test.tp5.com/api/v1/order/1 参数 header传 token值
+Route::get('api/:version/order/:id','api/:version.Order/getDetail',[],['id'=>'^(-?\d+)(\.\d+)?']);
 
 //http://test.tp5.com/api/v1/pay/pre_order  参数 header传 token值,post传 id (订单id)
 Route::post('api/:version/pay/pre_order','api/:version.Pay/getPreOrder');
-//http://test.tp5.com/api/v1/pay/notify
+//http://test.tp5.com/api/v1/pay/notify，微信支付回调方法
 Route::post('api/:version/pay/notify','api/:version.Pay/receiveNotify');

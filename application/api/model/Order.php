@@ -13,8 +13,42 @@ class Order extends BaseModel
 {
     protected $hidden = ['user_id', 'delete_time', 'update_time'];
 
+    public function getSnapImgAttr($value)
+    {
+        return config('setting.img_prefix') . $value;
+    }
+
     public function setSnapImgAttr($value)
     {
-        return str_replace('http://test.tp5.com/images','',$value);
+        return str_replace('http://test.tp5.com/images', '', $value);
+    }
+
+    public function getSnapItemsAttr($value)
+    {
+        if(empty($value)){
+            return null;
+        }
+        return json_decode($value);
+    }
+    public function getSnapAddressAttr($value)
+    {
+        if(empty($value)){
+            return null;
+        }
+        return json_decode($value);
+    }
+
+    /**
+     * @param $uid
+     * @param int $page
+     * @param int $size
+     * @return \think\Paginator
+     */
+    public static function getSummaryByUser($uid, $page = 1, $size = 15)
+    {
+        $pagingData = self::where('user_id', '=', $uid)
+            ->order('create_time desc')
+            ->paginate($size, true, ['page' => $page]);
+        return $pagingData;
     }
 }
