@@ -1,4 +1,6 @@
 // home.js
+import {Home} from 'home-model.js';
+var home = new Home();
 Page({
 
   /**
@@ -12,8 +14,35 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    this._loadData();
   },
+
+  _loadData: function(){
+    var id = 1;
+    //home.getBannerData(id, this.callback);
+    home.getBannerData(id, (res)=>{
+      this.setData({
+        'bannerArr':res
+        });
+    });
+    home.getThemeData((res) => {
+      console.log(res);
+      this.setData({
+        'themeArr': res
+      });
+    });
+    home.getProductsData((data)=>{
+      this.setData({
+        productsArr: data
+      });
+    })
+  },
+  /**
+   * 回调函数
+   */
+  //callback:function(res){
+  //  console.log(res);
+ // },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
