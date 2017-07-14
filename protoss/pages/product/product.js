@@ -1,6 +1,4 @@
-// home.js
-import {Home} from 'home-model.js';
-var home = new Home();
+// product.js
 Page({
 
   /**
@@ -14,42 +12,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this._loadData();
+  
   },
 
-  _loadData: function(){
-    var id = 1;
-    //home.getBannerData(id, this.callback);
-    home.getBannerData(id, (res)=>{
-      this.setData({
-        'bannerArr':res
-        });
-    });
-    home.getThemeData((res) => {
-      this.setData({
-        'themeArr': res
-      });
-    });
-    home.getProductsData((data)=>{
-      this.setData({
-        productsArr: data
-      });
-    })
-  },
-  /**
-   * 回调函数
-   */
-  //callback:function(res){
-  //  console.log(res);
- // },
-  /**跳转到商品详情页 */
-  onProductsItemTap:function(event){
-    var id=null;
-    console.log(event);
-    wx.navigateTo({
-      url: '../product/product?id='+id,
-    })
-  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
