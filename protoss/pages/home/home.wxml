@@ -1,5 +1,5 @@
 <!--home.wxml-->
-<import src="../tpls/products/products-tpl.wxml"/>
+<import src="../tpls/products/products-tpl.wxml" />
 <view class="container">
   <swiper indicator-dots="true" autoplay="true" class="swiper">
     <block wx:key="key_word" wx:for="{{bannerArr}}">
@@ -16,11 +16,11 @@
 
       <view class="theme-box">
         <block wx:key="id" wx:for="{{themeArr}}">
-          <view wx:if="{{index==2}}" class="theme-item big">
-            <image  src="{{item.topic_img.url}}"></image>
+          <view wx:if="{{index==2}}" class="theme-item big" bindtap="onThemeItemTap" data-name="{{item.name}}" data-id="{{item.id}}">
+            <image src="{{item.topic_img.url}}"></image>
           </view>
-          <view wx:else class="theme-item">
-            <image  src="{{item.topic_img.url}}"></image>
+          <view wx:else class="theme-item" bindtap="onThemeItemTap" data-name="{{item.name}}" data-id="{{item.id}}">
+            <image src="{{item.topic_img.url}}"></image>
           </view>
         </block>
       </view>

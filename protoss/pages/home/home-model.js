@@ -1,14 +1,14 @@
 // home-model.js
-import {Base} from '../../utils/base.js';
-class Home extends Base{
-  constructor(){
+import { Base } from '../../utils/base.js';
+class Home extends Base {
+  constructor() {
     super();
   }
   /**banner */
-  getBannerData(id,callback){
+  getBannerData(id, callback) {
     var params = {
       url: 'banner/' + id,
-      sCallback: function(res){
+      sCallback: function (res) {
         callback && callback(res.items);
       }
     }
@@ -23,17 +23,17 @@ class Home extends Base{
     // })
   }
   /**精选主题 */
-  getThemeData(callback){
+  getThemeData(callback) {
     var params = {
-      url:'theme?ids=1,2,3',
-      sCallback:function(data){
+      url: 'theme?ids=1,2,3',
+      sCallback: function (data) {
         callback && callback(data);
       }
     }
     this.request(params);
   }
   /**最近新品 */
-  getProductsData(callback){
+  getProductsData(callback) {
     var params = {
       url: 'product/recent?count=13',
       sCallback: function (data) {
@@ -43,4 +43,4 @@ class Home extends Base{
     this.request(params);
   }
 }
-export {Home}
+export { Home }

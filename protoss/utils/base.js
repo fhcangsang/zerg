@@ -4,6 +4,7 @@ class Base {
   constructor (){
     this.baseRequestUrl = Config.restUrl;
   }
+  /**发送请求 */
   request(params){
     var url = this.baseRequestUrl + params.url;
     if(!params.type){
@@ -27,6 +28,10 @@ class Base {
           console.log(err);
       }
     })
+  }
+  /**获取元素上绑定的值 */
+  getDataSet(event,key){
+    return event.currentTarget.dataset[key];
   }
 }
 export {Base};
