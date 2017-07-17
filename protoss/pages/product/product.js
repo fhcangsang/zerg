@@ -7,11 +7,11 @@ Page({
    * 页面的初始数据
    */
   data: {
-    id:null,
-    countsArray:[1,2,3,4,5,6,7,8,9,10], //购买数量
-    tabsArray:['商品详情','产品参数','售后服务'],
-    productCount:1,
-    curentTapIndex:0
+    id: null,
+    countsArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], //购买数量
+    tabsArray: ['商品详情', '产品参数', '售后服务'],
+    productCount: 1,
+    curentTapIndex: 0
   },
 
   /**
@@ -31,18 +31,18 @@ Page({
     })
   },
   /**购买商品数量 */
-  bindPickerChange: function(event){
+  bindPickerChange: function (event) {
     var index = event.detail.value;
     var selectCount = this.data.countsArray[index];
     this.setData({
-      productCount:selectCount
+      productCount: selectCount
     });
   },
   /**tab切换 */
-  onTabsItemTap:function(event){
-    var index = product.getDataSet(event,'index');
+  onTabsItemTap: function (event) {
+    var index = product.getDataSet(event, 'index');
     this.setData({
-      curentTapIndex:index
+      curentTapIndex: index
     });
   }
 
