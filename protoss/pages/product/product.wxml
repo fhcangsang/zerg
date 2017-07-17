@@ -6,17 +6,44 @@
         <image src="../../imgs/icon/cart@top.png"></image>
       </view>
     </view>
+
     <view class="detail-topic-img">
       <image src="{{product.main_img_url}}" mode="aspectFit"></image>
     </view>
+
     <view class="cart-box">
-      <view class="product-counts"></view>
-      <view class="middle-border">|</view>
-      <view class="add-cart-btn"></view>
+      <view class="product-counts">
+        <picker class="{{product.stock==0?'disabled':''}}" range="{{countsArray}}" value="1" bindchange="bindPickerChange">
+          <view>
+            <text class="conuts-tips">数量</text>
+            <text class="counts-data">{{productCount}}</text>
+            <image src="../../imgs/icon/arrow@down.png" class="counts-icon"></image>
+          </view>
+        </picker>
+      </view>
+      <view class="middle-border"></view>
+      <view class="add-cart-btn {{product.stock==0?'disabled':''}}">
+        <text>加入购物车</text>
+        <image class="cart-icon" src="../../imgs/icon/cart.png"></image>
+      </view>
     </view>
-    <view class="base-info-box"></view>
+
+    <view class="basic-info-box">
+      <view class="stock" wx:if="{{product.stock>0}}">有货</view>
+      <view wx:else class="stock no">缺货</view>
+      <view class="name">{{product.name}}</view>
+      <view class="price">￥{{product.price}}</view>
+    </view>
+
   </view>
+
   <view class="detail-bottom-box">
-  
+    <view class="tabs-box">
+      <block wx:key="index" wx:for="{{tabsArray}}">
+        <view class="tabs-item {{curentTapIndex == index ? 'selected':''}}" bindtap="onTabsItemTap" data-index="{{index}}">{{item}}</view>
+      </block>
+    </view>
+
+    <view class="product-detail-box"></view>
   </view>
 </view>

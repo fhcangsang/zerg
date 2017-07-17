@@ -33,6 +33,13 @@ Page({
     wx.setNavigationBarTitle({
       title: this.data.name,
     })
+  },
+   /**跳转到商品详情页 */
+  onProductsItemTap: function (event) {
+    var id = theme.getDataSet(event, 'id');
+    wx.navigateTo({
+      url: '../product/product?id=' + id,
+    })
   }
 
 })
