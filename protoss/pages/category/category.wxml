@@ -1,2 +1,18 @@
 <!--category.wxml-->
-<text>category.wxml</text>
+<import src="../tpls/category/category-tpl.wxml"/>
+<view class="container category-container">
+  <view class="category-box">
+    <view class="left-box">
+      <block wx:key="id" wx:for="{{categoryTypeArr}}">
+        <view class="menu-item selected">
+          {{item.name}}
+        </view>
+      </block>
+    </view>
+    <view class="right-box">
+      <view class="foods-type-box">
+        <template is="categorydetail" data="{{categoryInfo:productsArr}}"></template>
+      </view>
+    </view>
+  </view>
+</view>

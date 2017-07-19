@@ -21,7 +21,7 @@ class Category extends Base {
         callback && callback(data);
       }
     }
-    this.request(data);
+    this.request(parame);
   }
 }
 export { Category }

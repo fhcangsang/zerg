@@ -18,7 +18,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var id = options.id;
+    var id = options.id; //页面回传的商品id
     this.data.id = id;
     this._locadData(id);
   },
