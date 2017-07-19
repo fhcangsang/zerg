@@ -20,7 +20,8 @@ class Order extends BaseModel
 
     public function setSnapImgAttr($value)
     {
-        return str_replace('http://test.tp5.com/images', '', $value);
+        $prefix = config('setting.img_prefix');
+        return str_replace($prefix, '', $value);
     }
 
     public function getSnapItemsAttr($value)

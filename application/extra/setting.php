@@ -6,6 +6,6 @@
  * Time: 14:43
  */
 return [
-    'img_prefix' => 'http://test.tp5.com/images',
+    'img_prefix' =>'http://test.tp5.com/images',
     'token_expire_in' => 7200
 ];

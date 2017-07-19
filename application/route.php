@@ -49,7 +49,7 @@ Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 //http://test.tp5.com/api/v1/address  参数 header传 token值,post传地址等信息.
 Route::post('api/:version/address','api/:version.Address/createOrUpdateAddress');
 
-//http://test.tp5.com/api/v1/order  参数 header传 token值,post传products=>['product_id'=>1,'count'=>3].
+//http://test.tp5.com/api/v1/order  参数 header传 token值,post传{"products":[{"product_id":11,"count":5}]}.
 Route::post('api/:version/order','api/:version.Order/placeOrder');
 //http://test.tp5.com/api/v1/order/by_user?page=2&size=12 参数 header传 token值
 Route::get('api/:version/order/by_user','api/:version.Order/getSummaryByUser');
