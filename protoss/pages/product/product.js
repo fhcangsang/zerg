@@ -1,6 +1,8 @@
 // product.js
 import { Product } from 'product-model.js';
+import { Cart } from '../cart/cart-model.js';
 var product = new Product();
+var cart = new Cart();
 Page({
 
   /**
@@ -24,8 +26,8 @@ Page({
   },
   _locadData: function (id) {
     product.getProductInfo(id, (res) => {
-      console.log(res);
       this.setData({
+        cartTotalCounts:cart.getCartTotalCounts(),
         product: res
       });
     })
@@ -44,6 +46,19 @@ Page({
     this.setData({
       curentTapIndex: index
     });
+  },
+  /**添加购物车 */
+  onAddingToCartTap: function (event) {
+    this.addToCart();
+  },
+  addToCart: function () {
+    var tempObj = {};
+    var keys = ['id', 'name', 'main_img_url', 'price'];
+    for (var key in this.data.product) {
+      if (keys.indexOf(key) >= 0) {
+        tempObj[key] = this.data.product[key];
+      }
+    }
+    cart.add(tempObj, this.data.productCount);
   }
-
 })
