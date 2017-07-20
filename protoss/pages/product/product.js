@@ -50,6 +50,10 @@ Page({
   /**添加购物车 */
   onAddingToCartTap: function (event) {
     this.addToCart();
+    var counts = this.data.cartTotalCounts + this.data.productCount;
+    this.setData({
+      cartTotalCounts: cart.getCartTotalCounts()
+    });
   },
   addToCart: function () {
     var tempObj = {};
