@@ -27,7 +27,7 @@ Page({
   _locadData: function (id) {
     product.getProductInfo(id, (res) => {
       this.setData({
-        cartTotalCounts:cart.getCartTotalCounts(),
+        cartTotalCounts: cart.getCartTotalCounts().counts1,
         product: res
       });
     })
@@ -52,7 +52,7 @@ Page({
     this.addToCart();
     var counts = this.data.cartTotalCounts + this.data.productCount;
     this.setData({
-      cartTotalCounts: cart.getCartTotalCounts()
+      cartTotalCounts: cart.getCartTotalCounts().counts1
     });
   },
   addToCart: function () {
@@ -64,5 +64,10 @@ Page({
       }
     }
     cart.add(tempObj, this.data.productCount);
+  },
+  onCartTap: function(event){
+    wx.switchTab({
+      url: '/pages/cart/cart'
+    });
   }
 })
