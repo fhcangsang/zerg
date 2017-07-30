@@ -63,7 +63,7 @@ class Pay
             throw new OrderException();
         }
 
-        if (!Token::checkValidPerate($order->user_id)) { //订单号与当前用户是否匹配
+        if (!Token::checkValidOperate($order->user_id)) { //订单号与当前用户是否匹配
             throw new TokenException([
                 'msg' => '订单ID与用户ID不匹配',
                 'errorCode' => 10003

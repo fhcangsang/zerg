@@ -45,6 +45,8 @@ Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories'
 
 //http://test.tp5.com/api/v1/token/user  post 传参 {"code":"0038DXpA1m0D9i0eeeoA1nn2qA18DXpQ"}
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
+//http://test.tp5.com/api/v1/token/verify post 传参数 {"token":"dsfskdsh44"}
+Route::post('api/:version/token/verify','api/:version.Token/verifyToken');
 
 //http://test.tp5.com/api/v1/address  参数 header传 token值,
 //post传地址等信息{"name":"放逐","mobile":"18177289357","province":"艾泽拉斯","city":"深渊之城","country":"轮回葬地","detail":"金岭圣殿","uid":1}

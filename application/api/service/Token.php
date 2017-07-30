@@ -115,7 +115,7 @@ class Token
      * @throws Exception
      * 检测当前用户是否匹配
      */
-    public static function checkValidPerate($checkUID)
+    public static function checkValidOperate($checkUID)
     {
         if(!$checkUID){
             throw new Exception("必须传入要检测的UID");
@@ -125,5 +125,14 @@ class Token
             return true;
         }
         return false;
+    }
+
+    public static function verifyToken($token){
+        $exist = Cache::get($token);
+        if($exist){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
