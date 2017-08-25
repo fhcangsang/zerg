@@ -21,7 +21,7 @@ use think\Controller;
 class Address extends BaseController
 {
     protected $beforeActionList = [
-        'checkPrimaryScope' => ['only' => 'createOrUpdateAddress']
+        'checkPrimaryScope' => ['only' => 'createOrUpdateAddress,getUserAddress']
     ];
 
 
