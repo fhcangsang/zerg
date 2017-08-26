@@ -118,7 +118,7 @@ class Pay
     {
         $wxOrder = \WxPayApi::unifiedOrder($wxOrderData);
 //        var_dump($wxOrder);
-        if ($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result'] != 'SUCCESS') {
+        if ($wxOrder['return_code'] != 'SUCCESS' || $wxOrder['result_code'] != 'SUCCESS') {
             Log::init([
                 'type' => 'File',
                 'path' => ROOT_PATH . 'log' . DS,
@@ -126,9 +126,14 @@ class Pay
             ]);
             Log::record($wxOrder, 'error');
             Log::record('获取预支付订单失败', 'error');
-            return false;
+
 //            return $wxOrder;
         }
+        //模拟微信返回的预订单结果
+        $wxOrder = [
+            'trade_type' => 'JSAPI',
+            'prepay_id' => 'wx201410272009395522657a690389285100'
+        ];
          //prepay_id
         $this->recordPreOrder($wxOrder);
         $rawValues = $this->sign($wxOrder);
