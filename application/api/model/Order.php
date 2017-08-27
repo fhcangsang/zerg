@@ -13,6 +13,10 @@ class Order extends BaseModel
 {
     protected $hidden = ['user_id', 'delete_time', 'update_time'];
 
+    public function products(){
+        return $this->hasMany('OrderProduct','order_id','id');
+    }
+
     public function getSnapImgAttr($value)
     {
         return config('setting.img_prefix') . $value;
@@ -29,14 +33,14 @@ class Order extends BaseModel
         if(empty($value)){
             return null;
         }
-        return json_decode($value);
+        return json_decode($value,true);
     }
     public function getSnapAddressAttr($value)
     {
         if(empty($value)){
             return null;
         }
-        return json_decode($value);
+        return json_decode($value,true);
     }
 
     /**

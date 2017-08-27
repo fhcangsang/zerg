@@ -69,10 +69,21 @@ class Order extends BaseController
     {
         //订单详情
         (new IDMustBePostiveInt())->goCheck();
-        $orderDetail = OrderModel::get($id);
+        $orderModel = new OrderModel();
+        $orderDetail = $orderModel->with(['products','products.img'])->find($id)->toArray();
+//        var_dump($orderDetail);die;
+        foreach($orderDetail['products']  as $k=>$v){
+            if($orderDetail['snap_items'][$k]['id'] == $v['product_id']){
+                $orderDetail['snap_items'][$k]['price']= $v['img']['price'];
+                $orderDetail['snap_items'][$k]['main_img_url'] = $v['img']['main_img_url'];
+            }
+        }
+        unset($orderDetail['products']);
+        unset($orderDetail['prepay_id']);
         if (!$orderDetail) {
             throw new OrderException();
         }
-        return $orderDetail->hidden(['prepay_id']);
+//        return $orderDetail->hidden(['prepay_id']); //已转成数组，不能使用hidden()方法
+        return $orderDetail;
     }
 }

@@ -60,7 +60,7 @@
           <view>￥{{item.price}}</view>
         </view>
         <view class="item-right">
-          ×{{item.counts}}
+          ×{{item.count}}
         </view>
       </view>
     </block>

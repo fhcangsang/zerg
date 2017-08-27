@@ -49,6 +49,7 @@ Page({
                 //下单后，支付成功或者失败后，点左上角返回时能够更新订单状态 所以放在onshow中
                 var id = this.data.id;
                 order.getOrderInfoById(id, (data)=> {
+                  console.log(data);
                     that.setData({
                         orderStatus: data.status,
                         productsArr: data.snap_items,
@@ -221,6 +222,7 @@ Page({
                     that.deleteProducts(); //将已经下单的商品从购物车删除   当状态为0时，表示
 
                     var flag = statusCode == 2;
+                    //var flag = true;
                     wx.navigateTo({
                         url: '../pay-result/pay-result?id=' + id + '&flag=' + flag + '&from=order'
                     });

@@ -11,5 +11,8 @@ namespace app\api\model;
 
 class OrderProduct extends BaseModel
 {
-
+    protected $hidden = ['delete_time', 'create_time', 'update_time'];
+    public function img(){
+        return $this->hasOne('Product','id','product_id');
+    }
 }
