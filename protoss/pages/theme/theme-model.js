@@ -1,17 +1,23 @@
-import { Base } from '../../utils/base.js';
-class Theme extends Base {
-  constructor() {
-    super();
-  }
-  /**获取主题下商品 */
-  getProductsData(id, callback) {
-    var params = {
-      url: 'theme/' + id,
-      sCallback: function (data) {
-        callback && callback(data);
-      }
+/**
+ * Created by jimmy on 17/2/26.
+ */
+import {Base} from '../../utils/base.js';
+
+class Theme extends Base{
+    constructor(){
+        super();
     }
-    this.request(params);
-  }
-}
-export { Theme };
+
+    /*商品*/
+    getProductorData(id,callback){
+        var param={
+            url: 'theme/'+id,
+            sCallback:function(data){
+                callback && callback(data);
+            }
+        };
+        this.request(param);
+    }
+};
+
+export {Theme};

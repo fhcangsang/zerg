@@ -1,27 +1,33 @@
-import { Base } from '../../utils/base.js';
+/**
+ * Created by jimmy on 17/2/26.
+ */
+import {Base} from '../../utils/base.js';
+
 class Category extends Base {
-  constructor() {
-    super();
-  }
-  /**获取所有分类 */
-  getCategoryType(callback) {
-    var params = {
-      url: 'category/all',
-      sCallback: function (data) {
-        callback && callback(data);
-      }
+    constructor() {
+        super();
     }
-    this.request(params);
-  }
-  /**获取某分类下的商品 */
-  getProductsByCategory(id, callback) {
-    var parame = {
-      url: 'product/by_category?id=' + id,
-      sCallback: function (data) {
-        callback && callback(data);
-      }
+
+    /*获得所有分类*/
+    getCategoryType(callback) {
+        var param = {
+            url: 'category/all',
+            sCallback: function (data) {
+                callback && callback(data);
+            }
+        };
+        this.request(param);
     }
-    this.request(parame);
-  }
+    /*获得某种分类的商品*/
+    getProductsByCategory(id,callback) {
+        var param = {
+            url: 'product/by_category?id='+id,
+            sCallback: function (data) {
+                callback && callback(data);
+            }
+        };
+        this.request(param);
+    }
 }
-export { Category }
+
+export{Category};

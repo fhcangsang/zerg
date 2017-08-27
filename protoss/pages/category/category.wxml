@@ -1,15 +1,15 @@
-<!--category.wxml-->
 <import src="../tpls/category/category-tpl.wxml"/>
 <view class="container category-container">
   <view class="category-box">
-    <view class="left-box">
-      <block wx:key="id" wx:for="{{categoryTypeArr}}">
-        <view class="menu-item {{currentMenuIndex==index?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="changeCategory" data-title-name="{{item.name}}">
-          {{item.name}}
-        </view>
-      </block>
+      <view class="left-box">
+        <block wx:for="{{categoryTypeArr}}">
+          <view class="menu-item {{currentMenuIndex==index?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="changeCategory" data-title-name="{{item.name}}">
+            {{item.name}}
+          </view>
+        </block>
     </view>
     <view class="right-box {{transClassArr[currentMenuIndex]}}">
+
       <view class="foods-type-box">
         <template is="categorydetail" data="{{categoryInfo:categoryInfo0}}"/>
       </view>
@@ -28,7 +28,9 @@
       <view class="foods-type-box">
         <template is="categorydetail" data="{{categoryInfo:categoryInfo5}}"/>
       </view>
+
     </view>
+
   </view>
   <loading hidden="{{loadingHidden}}">
     加载中...

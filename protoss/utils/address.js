@@ -14,7 +14,6 @@ class Address extends Base{
         var that=this;
         var param={
             url: 'address',
-            type: 'get',
             sCallback:function(res){
                 if(res) {
                     res.totalDetail = that.setAddressInfo(res);

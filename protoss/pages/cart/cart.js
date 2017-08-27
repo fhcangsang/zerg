@@ -22,7 +22,7 @@ Page({
      */
     onShow:function(){
         var cartData=cart.getCartDataFromLocal(),
-            countsInfo=cart.getCartTotalCounts(true);
+            countsInfo=cart.getCartTotalCounts(true);  
         this.setData({
             selectedCounts:countsInfo.counts1,
             selectedTypeCounts:countsInfo.counts2,
