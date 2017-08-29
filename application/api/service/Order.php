@@ -30,6 +30,7 @@ class Order
     {
         $this->oProducts = $oProducts;
         $this->uid = $uid;
+        //根据用户订单传过来的product_id查找出商品信息
         $this->products = $this->getProductsByOrder($oProducts);
         $status = $this->getOrderStatus();
         if (!$status['pass']) {//订单检测不通过
@@ -62,7 +63,7 @@ class Order
             $orderID = $order->id;
             $createTime = $order->create_time;
             foreach ($this->oProducts as &$p) {
-                $p['order_id'] = $orderID;
+                $p['order_id'] = $orderID; //重组数组 将订单Order_id加入oProducts中
             }
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($this->oProducts);
@@ -182,6 +183,8 @@ class Order
             'haveStock' => false,
             'count' => 0,
             'name' => '',
+            'price' => 0,
+            'main_img_url' => '',
             'totalPrice' => 0
         ];
         for ($i = 0; $i < count($products); $i++) {
@@ -198,6 +201,8 @@ class Order
             $pStatus['id'] = $product['id'];
             $pStatus['count'] = $oCount;
             $pStatus['name'] = $product['name'];
+            $pStatus['price'] = $product['price'];
+            $pStatus['main_img_url'] = $product['main_img_url'];
             $pStatus['totalPrice'] = $product['price'] * $oCount;
             if ($product['stock'] - $oCount >= 0) {
                 $pStatus['haveStock'] = true;

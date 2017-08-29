@@ -13,6 +13,10 @@ class Order extends BaseModel
 {
     protected $hidden = ['user_id', 'delete_time', 'update_time'];
 
+    /**
+     * @return \think\model\relation\HasMany
+     * 一对多关联
+     */
     public function products(){
         return $this->hasMany('OrderProduct','order_id','id');
     }
