@@ -1,24 +1,34 @@
 <?php
 namespace app\index\controller;
+use think\Controller;
 use think\Validate;
 use think\Loader;
 use think\Request;
-class Index
+class Index extends Controller
 {
+	public function __construct(){
+	    parent::__construct();
+		echo '1';
+	}
+	
+	public function _initialize(){
+		echo '2';
+	}
+	
     public function index()
     {
          return json(['name'=>'mr','age'=>3,'color'=>'blue']);
         
     }
 
-    public function validate(){
+    public function validates(){
     	/*$validate = new Validate([
     			'name' => 'require|max:25',
                 'email' => 'email'   
     		]);*/
         $data = [
             'name' => 'mysql_insert_id',
-            'email' => 'haungqq.com'
+            'email' => 'hung.com'
 
         ];
 
