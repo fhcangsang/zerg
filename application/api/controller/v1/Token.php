@@ -7,11 +7,14 @@
  */
 namespace app\api\controller\v1;
 
+use app\api\service\AppToken;
 use app\api\service\UserToken;
 use app\api\service\Token as TokenService;
+use app\api\validate\AppTokenGet;
 use app\api\validate\TokenGet;
 use app\lib\exception\ParameterException;
 use think\Controller;
+use think\Request;
 
 class Token extends Controller
 {
@@ -28,6 +31,16 @@ class Token extends Controller
         $ut = new UserToken($code);
         $token = $ut->get();
         return ['token' => $token];
+    }
+
+    public function getAppToken($ac='',$se=''){
+        (new AppTokenGet())->goCheck();
+        $ut = new AppToken();
+        $request = Request::instance();
+        $ac = $request->post('ac');
+        $se = $request->post('se');
+        $token = $ut->get($ac,$se);
+        return ['token'=>$token];
     }
 
     /**

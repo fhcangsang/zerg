@@ -40,13 +40,13 @@ class Index extends Controller
     }
 
 
-    public function sess(){
+    public function session1(){
         session('name','Mr.Li');
         dump(session('name'));
         dump(session('?name'));
     }
 
-    public function sess2(){
+    public function session2(){
         dump(session('name'));
     }
 
