@@ -40,14 +40,20 @@ class Index extends Controller
     }
 
 
-    public function session1(){
+    public function session1(Request $request){
+        session_start();
+        dump(session_id());
         session('name','Mr.Li');
-        dump(session('name'));
+        dump($request->session('name'));
         dump(session('?name'));
+        dump(session_id());
     }
 
     public function session2(){
+        session_start();
+        dump(session_id());
         dump(session('name'));
+        dump(session_id());
     }
 
     public function cook(){
@@ -56,7 +62,7 @@ class Index extends Controller
         // 指定当前前缀 
             \think\Cookie::prefix('think_'); 
         // 设置Cookie 有效期为 3600秒 
-            \think\Cookie::set('name','value',3600); 
+            \think\Cookie::set('uid','12',3600);
         // 获取指定前缀的cookie值 
         return \think\Cookie::get('name','think_');
     }

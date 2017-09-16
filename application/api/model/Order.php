@@ -17,8 +17,9 @@ class Order extends BaseModel
      * @return \think\model\relation\HasMany
      * 一对多关联
      */
-    public function products(){
-        return $this->hasMany('OrderProduct','order_id','id');
+    public function products()
+    {
+        return $this->hasMany('OrderProduct', 'order_id', 'id');
     }
 
     public function getSnapImgAttr($value)
@@ -34,17 +35,18 @@ class Order extends BaseModel
 
     public function getSnapItemsAttr($value)
     {
-        if(empty($value)){
+        if (empty($value)) {
             return null;
         }
-        return json_decode($value,true);
+        return json_decode($value, true);
     }
+
     public function getSnapAddressAttr($value)
     {
-        if(empty($value)){
+        if (empty($value)) {
             return null;
         }
-        return json_decode($value,true);
+        return json_decode($value, true);
     }
 
     /**
@@ -58,6 +60,13 @@ class Order extends BaseModel
         $pagingData = self::where('user_id', '=', $uid)
             ->order('create_time desc')
             ->paginate($size, true, ['page' => $page]);
+        return $pagingData;
+    }
+
+    public static function getSummaryByPage($page = 1, $size = 20)
+    {
+        $pagingData = self::order('create_time desc')
+            ->paginate($size,true,['page'=>$page]);
         return $pagingData;
     }
 }

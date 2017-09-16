@@ -47,6 +47,7 @@ Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories'
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
 //http://test.tp5.com/api/v1/token/verify post 传参数 {"token":"dsfskdsh44"}
 Route::post('api/:version/token/verify','api/:version.Token/verifyToken');
+//http://test.tp5.com/api/v1/token/app  post 传参 {"ac":"admin","se":"123456"}
 Route::post('api/:version/token/app', 'api/:version.Token/getAppToken');
 
 //http://test.tp5.com/api/v1/address  参数 header传 token值,
@@ -61,6 +62,8 @@ Route::post('api/:version/order','api/:version.Order/placeOrder');
 Route::get('api/:version/order/by_user','api/:version.Order/getSummaryByUser');
 //http://test.tp5.com/api/v1/order/1 参数 header传 token值
 Route::get('api/:version/order/:id','api/:version.Order/getDetail',[],['id'=>'^(-?\d+)(\.\d+)?']);
+//http://test.tp5.com/api/v1/order/paginate?page=2&size=12 参数 header传 token值
+Route::get('api/:version/order/paginate','api/:version.Order/getSummary');
 
 //http://test.tp5.com/api/v1/pay/pre_order  参数 header传 token值,post传 id (订单id)
 Route::post('api/:version/pay/pre_order','api/:version.Pay/getPreOrder');
