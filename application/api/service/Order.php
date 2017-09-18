@@ -12,6 +12,7 @@ namespace app\api\service;
 use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\UserAddress;
+use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
 use think\Db;
@@ -229,4 +230,27 @@ class Order
         return $products;
     }
 
+    /**
+     * @param $orderId
+     * @return bool
+     * @throws OrderException
+     */
+    public function delivery($orderId,$jumPage=''){
+        $order = \app\api\model\Order::get($orderId);
+        if(!$order){
+            throw new OrderException();
+        }
+        if($order->status != OrderStatusEnum::PAID){
+            throw new OrderException([
+                'msg' => '还没付款呢',
+                'errorCode'=>80002,
+                'code'=>403
+            ]);
+        }
+        $order->status = OrderStatusEnum::DELIVERED;
+        $order->save();
+        $delivery = new DeliveryMessage();
+        $res = $delivery->sendDeliveryMessage($order,$jumPage);
+        return $res;
+    }
 }

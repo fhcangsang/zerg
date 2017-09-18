@@ -64,6 +64,7 @@ Route::get('api/:version/order/by_user','api/:version.Order/getSummaryByUser');
 Route::get('api/:version/order/:id','api/:version.Order/getDetail',[],['id'=>'^(-?\d+)(\.\d+)?']);
 //http://test.tp5.com/api/v1/order/paginate?page=2&size=12 参数 header传 token值
 Route::get('api/:version/order/paginate','api/:version.Order/getSummary');
+Route::put('api/:version/order/delivery','api/:version.Order/delivery');
 
 //http://test.tp5.com/api/v1/pay/pre_order  参数 header传 token值,post传 id (订单id)
 Route::post('api/:version/pay/pre_order','api/:version.Pay/getPreOrder');

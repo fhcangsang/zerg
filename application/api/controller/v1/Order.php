@@ -14,6 +14,7 @@ use app\api\validate\IDMustBePostiveInt;
 use app\api\validate\OrderPlace;
 use app\api\validate\PagingParameter;
 use app\lib\exception\OrderException;
+use app\lib\exception\SuccessMessage;
 use think\Controller;
 use app\api\model\Order as OrderModel;
 
@@ -22,7 +23,7 @@ class Order extends BaseController
 
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'placeOrder'],
-        'checkPrimaryScope' => ['only' => 'getSummaryByUser, getDetail']
+        'checkPrimaryScope' => ['only' => 'getSummaryByUser, getDetail,getSummary']
     ];
 
     /**下订单
@@ -110,5 +111,19 @@ class Order extends BaseController
         }
         return $orderDetail->hidden(['prepay_id']);
 
+    }
+
+    /**
+     * @param $id
+     * @return SuccessMessage
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function delivery($id){
+        (new IDMustBePostiveInt())->goCheck();
+        $orderServer= new \app\api\service\Order();
+        $success = $orderServer ->delivery($id);
+        if($success){
+            return new SuccessMessage();
+        }
     }
 }

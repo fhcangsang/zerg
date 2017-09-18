@@ -6,4 +6,6 @@ return [
     'login_url' => 'https://api.weixin.qq.com/sns/jscode2session?',
     //微信支付 回调 url
     'notify_url' => 'http://test.tp5.com/api/v1/pay/notify',
+    //微信小程序获取access_token的url
+    'access_token_url' => 'https://api.weixin.qq.com/cgi-bin/token?'
 ];
