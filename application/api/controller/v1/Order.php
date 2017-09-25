@@ -15,6 +15,7 @@ use app\api\validate\OrderPlace;
 use app\api\validate\PagingParameter;
 use app\lib\exception\OrderException;
 use app\lib\exception\SuccessMessage;
+use app\lib\exception\TokenException;
 use think\Controller;
 use app\api\model\Order as OrderModel;
 
@@ -69,6 +70,10 @@ class Order extends BaseController
     {
         //获取订单列表
         (new PagingParameter())->goCheck();
+        $uid = TokenService::getCurrentUid();
+        if(!$uid){
+            throw new TokenException();
+        }
         $pagingOrders = OrderModel::getSummaryByPage($page, $size);
         if ($pagingOrders->isEmpty()) {
             return [
@@ -83,11 +88,20 @@ class Order extends BaseController
         ];
     }
 
-
+    /**
+     * @param $id --订单id
+     * @return $this
+     * @throws OrderException
+     * @throws \app\lib\exception\ParameterException
+     */
     public function getDetail($id)
     {
         //订单详情
         (new IDMustBePostiveInt())->goCheck();
+        $uid = TokenService::getCurrentUid();
+        if(!$uid){
+            throw new TokenException();
+        }
         /*
          刚刚开始 下单是 没有将商品的price ，main_img_url存入订单表中
         因此取出时去关联，很麻烦
@@ -114,12 +128,16 @@ class Order extends BaseController
     }
 
     /**
-     * @param $id
+     * @param $id --订单id
      * @return SuccessMessage
      * @throws \app\lib\exception\ParameterException
      */
     public function delivery($id){
         (new IDMustBePostiveInt())->goCheck();
+        $uid = TokenService::getCurrentUid();
+        if(!$uid){
+            throw new TokenException();
+        }
         $orderServer= new \app\api\service\Order();
         $success = $orderServer ->delivery($id);
         if($success){
