@@ -14,11 +14,11 @@ class AdminNav extends BaseModel {
      * @param string $order
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public static function getAdminNav($order = ''){
+    public static function getAdminNav($order = []){
         if(empty($order)){
             $nav = self::select();
         }else{
-            $nav = self::order('order_number',$order)->select();
+            $nav = self::order($order)->select();
         }
 
         return $nav;

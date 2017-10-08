@@ -12,7 +12,12 @@ use Auth\Auth;
 
 class Menu
 {
-    public static function getMenuList($type = 'tree',$order = '')
+    /**
+     * @param string $type
+     * @param string $order
+     * @return array
+     */
+    public static function getMenuList($type = 'tree',$order = [])
     {
         $menuList = AdminNav::getAdminNav($order)->toArray();
         if($type == 'tree'){

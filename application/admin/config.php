@@ -10,9 +10,9 @@ return [
     'default_return_type' => 'html',
     // 视图输出字符串内容替换
     'view_replace_str' => [
-        '__ADMIN_CSS__' => '/admin/public/css',
-        '__ADMIN_JS__' => '/admin/public/js',
-        '__ADMIN_IMAGES__' => '/admin/public/images',
+        '__ADMIN_CSS__' => '/admin/css',
+        '__ADMIN_JS__' => '/admin/js',
+        '__ADMIN_IMAGES__' => '/admin/images',
         '__ADMIN_ACEADMIN__' => '/admin/aceadmin',
     ],
     'auth' => [  //有表前缀则带上表前缀
