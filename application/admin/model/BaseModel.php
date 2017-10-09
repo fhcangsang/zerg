@@ -11,5 +11,16 @@ use think\Model;
 
 class BaseModel extends Model
 {
-
+    /**
+     * @param $data
+     * @return false|int
+     * 新增数据
+     */
+    public function addData($obj,$data)
+    {
+        foreach($data as $k=>$v){
+            $data[$k] = trim($v);
+        }
+        return $obj->save($data);
+    }
 }

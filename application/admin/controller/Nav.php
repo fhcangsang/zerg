@@ -9,10 +9,15 @@
 namespace app\admin\controller;
 
 
+use app\admin\model\AdminNav;
 use app\admin\service\Menu;
+use think\Request;
 
 class Nav extends BaseController
 {
+    /**
+     * @return mixed
+     */
     public function index()
     {
         $menuList = Menu::getMenuList('tree',['order_number'=>'asc']);
@@ -20,7 +25,13 @@ class Nav extends BaseController
         return $this->fetch('nav/index');
     }
 
-    public function add(){
-        
+    /**
+     * @param Request $request
+     */
+    public function add(Request $request){
+        $data = $request->post();
+        $adminNav = new AdminNav();
+        $res = $adminNav->addData($adminNav,$data);
+        dump($res);
     }
 }

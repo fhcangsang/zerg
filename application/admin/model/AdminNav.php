@@ -23,4 +23,5 @@ class AdminNav extends BaseModel {
 
         return $nav;
     }
+
 }
