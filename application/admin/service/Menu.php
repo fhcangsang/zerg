@@ -14,12 +14,12 @@ class Menu
 {
     /**
      * @param string $type
-     * @param string $order
+     * @param array $order
      * @return array
      */
     public static function getMenuList($type = 'tree',$order = [])
     {
-        $menuList = AdminNav::getAdminNav($order)->toArray();
+        $menuList = (new AdminNav())->getAdminNav($order)->toArray();
         if($type == 'tree'){
             $data = Data::tree($menuList,'name','id','pid');
         }elseif($type == 'level'){

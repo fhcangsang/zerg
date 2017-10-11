@@ -9,19 +9,51 @@
 namespace app\admin\model;
 
 
-class AdminNav extends BaseModel {
+class AdminNav extends BaseModel
+{
     /**
-     * @param string $order
+     * @param array $order
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public static function getAdminNav($order = []){
-        if(empty($order)){
+    public  function getAdminNav($order = [])
+    {
+        if (empty($order)) {
             $nav = self::select();
-        }else{
+        } else {
             $nav = self::order($order)->select();
         }
 
         return $nav;
     }
 
+    /**
+     * @param $data
+     * @return false|int
+     */
+    public  function addData($data)
+    {
+        foreach ($data as $k => $v) {
+            $data[$k] = trim($v);
+        }
+        return self::save($data);
+    }
+
+    /**
+     * @param $map
+     * @return bool
+     */
+    public  function deleteData($map)
+    {
+        $count = $this->where(['pid'=>$map['id']])->count();
+        if($count !== 0){
+            return false;
+        }
+        $this->where($map)->delete();
+        return true;
+    }
+
+    public function editData($map,$data){
+        $result = $this->isUpdate(true)->save($data,$map);
+        return $result;
+    }
 }
