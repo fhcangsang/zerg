@@ -74,13 +74,27 @@ class Nav extends BaseController
 
     public function edit(Request $request)
     {
-        $data = $request->param();
-        $map = ['id'=>$data['id']];
+        $data = $request->post();
+        $map = ['id' => $data['id']];
         unset($data['id']);
-        $res = $this->adminNavModel->editData($map,$data);
-        if($res){
+        $res = $this->adminNavModel->editData($map, $data);
+        if ($res) {
             $this->success('修改成功', url('admin/Nav/index'));
-        }else{
+        } else {
+            $this->error('修改失败');
+        }
+
+    }
+
+
+    public function order(Request $request)
+    {
+        $data = $request->post();
+        $res = $this->adminNavModel->orderData($data);
+        if ($res) {
+            $this->success('排序成功', url('admin/Nav/index'));
+        }
+        else {
             $this->error('修改失败');
         }
 

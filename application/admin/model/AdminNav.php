@@ -15,7 +15,7 @@ class AdminNav extends BaseModel
      * @param array $order
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public  function getAdminNav($order = [])
+    public function getAdminNav($order = [])
     {
         if (empty($order)) {
             $nav = self::select();
@@ -30,7 +30,7 @@ class AdminNav extends BaseModel
      * @param $data
      * @return false|int
      */
-    public  function addData($data)
+    public function addData($data)
     {
         foreach ($data as $k => $v) {
             $data[$k] = trim($v);
@@ -42,18 +42,33 @@ class AdminNav extends BaseModel
      * @param $map
      * @return bool
      */
-    public  function deleteData($map)
+    public function deleteData($map)
     {
-        $count = $this->where(['pid'=>$map['id']])->count();
-        if($count !== 0){
+        $count = $this->where(['pid' => $map['id']])->count();
+        if ($count !== 0) {
             return false;
         }
         $this->where($map)->delete();
         return true;
     }
 
-    public function editData($map,$data){
-        $result = $this->isUpdate(true)->save($data,$map);
+    /**
+     * @param $map
+     * @param $data
+     * @return false|int
+     */
+    public function editData($map, $data)
+    {
+        $result = $this->isUpdate(true)->save($data, $map);
         return $result;
+    }
+
+    public function orderData($data, $id = 'id', $order = 'order_number')
+    {
+        foreach ($data as $k => $v) {
+            $v = empty($v) ? null : $v;
+            $this->isUpdate(true)->save([$order=>$v],[$id => $k]);
+        }
+        return true;
     }
 }
