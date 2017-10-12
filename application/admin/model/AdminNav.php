@@ -17,10 +17,11 @@ class AdminNav extends BaseModel
      */
     public function getAdminNav($order = [])
     {
+//        $order = ['order_number'=>'desc'];
         if (empty($order)) {
-            $nav = self::select();
+            $nav = $this->select();
         } else {
-            $nav = self::order($order)->select();
+            $nav = $this->order($order)->select();
         }
 
         return $nav;
@@ -35,7 +36,7 @@ class AdminNav extends BaseModel
         foreach ($data as $k => $v) {
             $data[$k] = trim($v);
         }
-        return self::save($data);
+        return $this->save($data);
     }
 
     /**
@@ -44,7 +45,8 @@ class AdminNav extends BaseModel
      */
     public function deleteData($map)
     {
-        $count = $this->where(['pid' => $map['id']])->count();
+        //$map = ['id'=>1];
+        $count = $this->where('pid','=',$map['id'])->count();
         if ($count !== 0) {
             return false;
         }

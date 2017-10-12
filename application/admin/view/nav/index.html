@@ -47,7 +47,8 @@
 						<td>
 							<a href="javascript:;" navId="{$v['id']}" navName="{$v['name']}"  onclick="add_child(this)">添加子菜单</a> |
 							<a href="javascript:;" navId="{$v['id']}" navName="{$v['name']}" navMca="{$v['mca']}" navIco="{$v['ico']}" onclick="edit(this)">修改</a> |
-							<a href="javascript:if(confirm('确定删除？'))location='{:url('admin/Nav/delete',array('id'=>$v['id']))}'">删除</a>
+							<!--<a href="javascript:if(confirm('确定删除？'))location='{:url('admin/Nav/delete',array('id'=>$v['id']))}'">删除</a>-->
+							<a href="javascript:;" navId="{$v['id']}" onclick="del(this)">删除</a>
 						</td>
 					</tr>
 				{/foreach}
@@ -178,7 +179,25 @@ function add_child(obj){
 	$("input[name='mca']").val('');
 	$('#bjy-add').modal('show');
 }
-
+function  del(obj) {
+	var navId=$(obj).attr('navId');
+	var url="{:url('admin/Nav/delete')}";
+	if(confirm('确定删除？')){
+	   $.ajax({
+		   url:url,
+		   type:'GET',
+		   data:{'id':navId},
+		   success:function (res) {
+				if(res.code ==1 && res.data==true){
+				    location.href="{:url('admin/Nav/index')}";
+				}
+               if(res.code ==0 && res.data==false){
+                   alert(res.msg);
+               }
+           }
+	   });
+	}
+}
 // 修改菜单
 function edit(obj){
 	var navId=$(obj).attr('navId');

@@ -60,13 +60,13 @@ class Nav extends BaseController
         if ($result != true) {
             $this->error($result);
         }
-        $id = $request->param();
-
-        $result = $this->adminNavModel->deleteData($id);
+        $id = $request->get('id');
+        $map = ['id'=>$id];
+        $result = $this->adminNavModel->deleteData($map);
         if ($result) {
-            $this->success('删除成功', url('admin/Nav/index'));
+            $this->success('删除成功', url('admin/Nav/index'),true);
         } else {
-            $this->error('请先删除子菜单');
+            $this->error('请先删除子菜单',null,false);
         }
 
     }
