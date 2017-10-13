@@ -19,7 +19,7 @@ class Menu
      */
     public static function getMenuList($type = 'tree',$order = [])
     {
-        $menuList = (new AdminNav())->getAdminNav($order)->toArray();
+        $menuList = model('AdminNav')->getAdminNav($order)->toArray();
         if($type == 'tree'){
             $data = Data::tree($menuList,'name','id','pid');
         }elseif($type == 'level'){

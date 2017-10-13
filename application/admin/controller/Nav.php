@@ -24,7 +24,7 @@ class Nav extends BaseController
     public function _initialize()
     {
         parent::_initialize();
-        $this->adminNavModel = new AdminNav();
+        $this->adminNavModel = model('AdminNav');
     }
 
     public function index()
@@ -39,6 +39,7 @@ class Nav extends BaseController
      */
     public function add(Request $request)
     {
+
         $result = (new \app\admin\validate\Nav())->goCheck();
         if ($result != true) {
             $this->error($result);
@@ -50,7 +51,7 @@ class Nav extends BaseController
             'mca' => 'admin/ShowNav/rule',
             'ico' => 'fa-',
         ];*/
-        $this->adminNavModel->addData($data);
+        AdminNav::addData($data);
         $this->success('添加成功', url('admin/Nav/index'));
     }
 
@@ -62,7 +63,7 @@ class Nav extends BaseController
         }
         $id = $request->get('id');
         $map = ['id'=>$id];
-        $result = $this->adminNavModel->deleteData($map);
+        $result = AdminNav::deleteData($map);
         if ($result) {
             $this->success('删除成功', url('admin/Nav/index'),true);
         } else {
@@ -77,7 +78,7 @@ class Nav extends BaseController
         $data = $request->post();
         $map = ['id' => $data['id']];
         unset($data['id']);
-        $res = $this->adminNavModel->editData($map, $data);
+        $res = AdminNav::editData($map, $data);
         if ($res) {
             $this->success('修改成功', url('admin/Nav/index'));
         } else {
@@ -90,7 +91,7 @@ class Nav extends BaseController
     public function order(Request $request)
     {
         $data = $request->post();
-        $res = $this->adminNavModel->orderData($data);
+        $res = AdminNav::orderData($data);
         if ($res) {
             $this->success('排序成功', url('admin/Nav/index'));
         }

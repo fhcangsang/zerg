@@ -15,13 +15,13 @@ class AdminNav extends BaseModel
      * @param array $order
      * @return false|\PDOStatement|string|\think\Collection
      */
-    public function getAdminNav($order = [])
+    public static function getAdminNav($order = [])
     {
 //        $order = ['order_number'=>'desc'];
         if (empty($order)) {
-            $nav = $this->select();
+            $nav = self::select();
         } else {
-            $nav = $this->order($order)->select();
+            $nav = self::order($order)->select();
         }
 
         return $nav;
@@ -31,26 +31,28 @@ class AdminNav extends BaseModel
      * @param $data
      * @return false|int
      */
-    public function addData($data)
+    public static function addData($data)
     {
         foreach ($data as $k => $v) {
             $data[$k] = trim($v);
         }
-        return $this->save($data);
+        return self::create($data);//返回模型实例对象
     }
 
     /**
      * @param $map
      * @return bool
      */
-    public function deleteData($map)
+    public static function deleteData($map)
     {
         //$map = ['id'=>1];
-        $count = $this->where('pid','=',$map['id'])->count();
+        $count = self::where('pid','=',$map['id'])->count();
         if ($count !== 0) {
             return false;
         }
-        $this->where($map)->delete();
+        self::destroy(function ($query) use($map){
+           $query->where($map);
+        });
         return true;
     }
 
@@ -59,17 +61,18 @@ class AdminNav extends BaseModel
      * @param $data
      * @return false|int
      */
-    public function editData($map, $data)
+    public static function editData($map, $data)
     {
-        $result = $this->isUpdate(true)->save($data, $map);
+//        $result = $this->isUpdate(true)->save($data, $map);
+        $result = self::update($data,$map);//返回模型对象实例
         return $result;
     }
 
-    public function orderData($data, $id = 'id', $order = 'order_number')
+    public static function orderData($data, $id = 'id', $order = 'order_number')
     {
         foreach ($data as $k => $v) {
             $v = empty($v) ? null : $v;
-            $this->isUpdate(true)->save([$order=>$v],[$id => $k]);
+            self::update([$order=>$v],[$id => $k]);
         }
         return true;
     }
