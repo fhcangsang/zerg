@@ -2,10 +2,10 @@
 <template name="address">
   <form bindsubmit="formSubmit">
     <view class="section">
-      <input name="name" auto-focus placeholder="姓名"/>
+      <input name="name" auto-focus placeholder="姓名" />
     </view>
     <view class="section">
-      <input type="number" name="mobile" placeholder="手机号码"/>
+      <input type="number" name="mobile" placeholder="手机号码" />
     </view>
     <view class="section">
       <text>省份</text>
@@ -17,14 +17,14 @@
       </picker>
     </view>
     <view class="section">
-      <input name="city" placeholder="城市"/>
+      <input name="city" placeholder="城市" />
     </view>
     <view class="section">
-      <input name="town" placeholder="区县"/>
+      <input name="town" placeholder="区县" />
     </view>
     <view class="section">
-      <input name="detail" placeholder="详细地址、如街道、楼牌号等"/>
+      <input name="detail" placeholder="详细地址、如街道、楼牌号等" />
     </view>
-    <button  class="submit-btn" formType="submit">保存</button>
+    <button class="submit-btn" formType="submit">保存</button>
   </form>
 </template>

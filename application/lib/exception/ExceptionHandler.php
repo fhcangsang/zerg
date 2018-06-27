@@ -1,6 +1,7 @@
 <?php
 namespace app\lib\exception;
 
+use think\Config;
 use think\exception\Handle;
 use think\Log;
 use think\Request;
@@ -27,7 +28,7 @@ class ExceptionHandler extends Handle
             $this->msg = $e->msg;
             $this->errorCode = $e->errorCode;
         } else {
-            if (config("app_debug")) {
+            if (Config::get("app_debug")) {
                 return parent::render($e);
             } else {
                 $this->code = 500;

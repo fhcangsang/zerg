@@ -25,26 +25,27 @@
       <view class="contact-box">
         <view>
           <view class="contact">
-              <view>
-                <image src="../../imgs/icon/user.png"></image>
-                <text class="val">{{addressInfo.name}}</text>
-              </view>
-              <view class="mobile-box">
-                <image src="../../imgs/icon/mobile.png"></image>
-                <text  class="val">{{addressInfo.mobile}}</text>
-              </view>
+            <view>
+              <image src="../../imgs/icon/user.png"></image>
+              <text class="val">{{addressInfo.name}}</text>
+            </view>
+            <view class="mobile-box">
+              <image src="../../imgs/icon/mobile.png"></image>
+              <text class="val">{{addressInfo.mobile}}</text>
+            </view>
           </view>
           <view class="detail">{{addressInfo.totalDetail}}</view>
         </view>
         <view class="contact-icon" wx:if="{{orderStatus==0}}">
-            <image src="../../imgs/icon/arrow@right.png"></image>
+          <image src="../../imgs/icon/arrow@right.png"></image>
         </view>
       </view>
     </block>
     <block wx:else>
       <view class="add-new-address">
         <text class="icon">+</text>
-        <text>添加地址</text></view>
+        <text>添加地址</text>
+      </view>
     </block>
   </view>
 
@@ -64,7 +65,7 @@
         </view>
       </view>
     </block>
-    </view>
+  </view>
 
   <!--结算-->
   <view class="footer-account-box order-accounts">
